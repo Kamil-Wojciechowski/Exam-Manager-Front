@@ -1,19 +1,18 @@
 // src/components/Dashboard.js
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Dashboard = ({ authState }) => {
-  const { isAuthenticated, user } = authState;
-
+const Dashboard = ({authState}) => {
+  const navigate = useNavigate();
+  const {isAuthenticated} = authState;
+  
+  if(!isAuthenticated) {
+    navigate("/login");
+  }
+  
   return (
     <div>
-      {isAuthenticated ? (
-        <>
-          <h2>Welcome, {user.firstname}!</h2>
-          {/* Add dashboard content here */}
-        </>
-      ) : (
-        <p>Please log in to access the dashboard.</p>
-      )}
+          <h2>Welcome</h2>
     </div>
   );
 };

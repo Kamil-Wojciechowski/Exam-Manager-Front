@@ -2,14 +2,31 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Navigation = () => {
+const Navigation = ({ authState }) => {
+  const { isAuthenticated, user } = authState;
+
+
   return (
-    <nav>
-      <ul>
-        <li><Link to="/login">Login</Link></li>
-        <li><Link to="/dashboard">Dashboard</Link></li>
-      </ul>
-    </nav>
+    <div>
+      <nav>
+        <ul>
+          {isAuthenticated ? (
+            <li><Link to="/">Dashboard</Link></li>
+          ) : (
+            <li><Link to="/login">Login</Link></li>
+          )}
+        </ul>
+      </nav>
+      <div>
+        {isAuthenticated ? (
+          <h2>
+            Hi, {user.firstname}
+          </h2>
+        ) : (
+          <></>
+        )}
+    </div>
+    </div >
   );
 };
 
