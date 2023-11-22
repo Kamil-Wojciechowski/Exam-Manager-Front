@@ -39,7 +39,7 @@ const Recovery = ({authState}) => {
             newErrors.email = 'Email is required';
             isValid = false;
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
-            newErrors.email = 'Invalid email format';
+            newErrors.email = 'Niepoprawna wartość.';
             isValid = false;
         }
 
