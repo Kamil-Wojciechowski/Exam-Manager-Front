@@ -2,11 +2,7 @@ import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import toastr from 'toastr';
-
 import axios from '../js/AxiosInstance';
-import { useConfig } from '../js/config';
-
-
 const Recovery = ({authState}) => {
     const navigate = useNavigate();
     const {isAuthenticated} = authState;
@@ -14,7 +10,6 @@ const Recovery = ({authState}) => {
     if(isAuthenticated) {
         navigate("/");
     }
-    const { baseUrl } = useConfig();
 
     const [formData, setFormData] = useState({
         email: '',
@@ -51,7 +46,7 @@ const Recovery = ({authState}) => {
     const handleRecovery = async () => {
         if (validateForm()) {
             try {
-                await axios.post(baseUrl + "/auth/recovery/" + formData.email);
+                await axios.post("/auth/recovery/" + formData.email);
             } catch (error) {}   
 
             toastr.success("Email został wysłany, na podany adres email.")

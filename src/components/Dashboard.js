@@ -1,18 +1,21 @@
 // src/components/Dashboard.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-const Dashboard = ({authState}) => {
+const Dashboard = ({ authState }) => {
   const navigate = useNavigate();
-  const {isAuthenticated} = authState;
-  
-  if(!isAuthenticated) {
-    navigate("/login");
-  }
-  
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    if (!authState.isAuthenticated || !authState.user) {
+      navigate('/login');
+    }
+  }, [authState, navigate]);
+
   return (
     <div>
-          <h2>Welcome</h2>
+      <p>{t('greeting')}, {authState.user ? authState.user.firstname : ""}</p>
     </div>
   );
 };

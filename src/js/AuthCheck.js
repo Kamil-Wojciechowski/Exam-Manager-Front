@@ -1,18 +1,16 @@
 // AuthCheck.js
 import React, { useEffect, useState } from 'react';
-import { useConfig } from './config';
 import axios from '../js/AxiosInstance';
 
 const AuthCheck = ({ children }) => {
-  const { baseUrl } = useConfig();
   const [authState, setAuthState] = useState({
     isAuthenticated: false,
     user: null,
     tokens: null,
   });
 
-  const checkUserDetails = (userDataCheck, accessToken, setAuthState) => {
-    const user = userDataCheck(accessToken);
+  const checkUserDetails = async (accessToken, setAuthState) => {
+    const user = await userDataCheck(accessToken);
 
     setAuthState({
       isAuthenticated: true,
@@ -31,7 +29,7 @@ const AuthCheck = ({ children }) => {
   };
 
   const userDataCheck = async (accessToken) => {
-    const response = await axios.get(`${baseUrl}/users/me`, {
+    const response = await axios.get(`/users/me`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -48,13 +46,13 @@ const AuthCheck = ({ children }) => {
 
       if (accessToken && refreshToken) {
         try {
-          checkUserDetails(userDataCheck, accessToken, setAuthState);
+          checkUserDetails(accessToken, setAuthState);
         } catch (error) {
           try {
             const refreshOld = localStorage.getItem('refreshToken');
 
             const response = await axios.post(
-              `${baseUrl}/auth/refresh/${refreshOld}`
+              `/auth/refresh/${refreshOld}`
             );
 
             const { token, refreshToken, expires } = response.data;

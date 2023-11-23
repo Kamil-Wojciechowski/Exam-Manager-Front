@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { Button, Form } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 import axiosInt from '../js/AxiosInstance';
-import { useConfig } from '../js/config';
 import toastr from 'toastr';
 
 const Login = ({ authState }) => {
-  const { isAuthenticated } = authState;
   const navigate = useNavigate();
-  const { baseUrl } = useConfig();
+  const { t } = useTranslation();
 
-  console.log(isAuthenticated);
-  if (isAuthenticated) {
-    console.log("IN");
-    navigate("/");
-  }
+  useEffect(() => {
+    if (authState.isAuthenticated) {
+      navigate('/');
+    }
+  }, [authState, navigate]);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -78,7 +77,7 @@ const Login = ({ authState }) => {
 
       try {
         const response = await axiosInt.post(
-          `${baseUrl}/auth/login`,
+          `/auth/login`,
           {
             email: formData.email,
             password: formData.password,
@@ -106,7 +105,7 @@ const Login = ({ authState }) => {
   // Render the login form if not authenticated
   return (
     <div>
-      <h2>Login</h2>
+      <h2>{t('login')}</h2>
       <Form onSubmit={(e) => { e.preventDefault(); handleLogin(); }}>
         <Form.Group>
           <Form.Label>
@@ -117,7 +116,7 @@ const Login = ({ authState }) => {
         </Form.Group>
         <Form.Group>
           <Form.Label>
-            Hasło:
+           {t('password')}:
             <Form.Control type='password' name='password' value={formData.password} onChange={handleChange} />
           </Form.Label>
           <div style={{ color: 'red' }}>{errors.password}</div>
