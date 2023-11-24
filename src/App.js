@@ -16,6 +16,7 @@ import Dashboard from './components/Dashboard';
 import RecoveryToken from './components/RecoveryToken';
 
 import NotFound from './components/NotFound';
+import ActivationToken from './components/ActivationToken';
 
 
 const App = () => {
@@ -33,6 +34,7 @@ const App = () => {
                   <Route path="/login" element={<Login authState={authState} />} />
                   <Route path="/login/recovery" element={<Recovery authState={authState} />} />
                   <Route path="/login/recovery/:recoveryToken" element={<RecoveryToken authState={authState} />} />
+                  <Route path="/login/activation/:activationToken" element={<ActivationToken authState={authState} />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </>

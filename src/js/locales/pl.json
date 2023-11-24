@@ -1,22 +1,22 @@
 {
-    "translation": {
-      "greeting": "Witaj!",
-      "login": "Zaloguj",
-      "dashboard": "Panel",
-      "password": "Hasło",
-      "passwordConfirm": "Powtórz hasło",
-      "send": "Wyślij",
-      "recovery": "Zresetuj hasło",
-      "pwd_match": "Hasła muszą być zgodne",
-      "pwd_between": "Musi zawierać od 8 do 30 znaków",
-      "pwd_upper": "Musi zawierać co najmniej jedną wielką literę",
-      "pwd_digit": "Musi zawierać co najmniej jedną cyfrę",
-      "pwd_special": "Musi zawierać co najmniej jeden znak specjalny",
-      "pwd_qwerty": "Nie może zawierać więcej niż 3 kolejnych znaków z klawiatury QWERTY.",
-      "pwd_whitespace": "Cannot contain whitespace",
-      "pwd_changed": "Hasło zostało zmienione!"
-
-
-    }
+  "translation": {
+    "greeting": "Witaj!",
+    "login": "Zaloguj",
+    "dashboard": "Panel",
+    "password": "Hasło",
+    "passwordConfirm": "Powtórz hasło",
+    "send": "Wyślij",
+    "recovery": "Zresetuj hasło",
+    "pwd_match": "Hasła muszą być zgodne",
+    "pwd_between": "Musi zawierać od 8 do 30 znaków",
+    "pwd_upper": "Musi zawierać co najmniej jedną wielką literę",
+    "pwd_digit": "Musi zawierać co najmniej jedną cyfrę",
+    "pwd_special": "Musi zawierać co najmniej jeden znak specjalny",
+    "pwd_qwerty": "Nie może zawierać więcej niż 3 kolejnych znaków z klawiatury QWERTY.",
+    "pwd_whitespace": "Cannot contain whitespace",
+    "pwd_changed": "Hasło zostało zmienione!",
+    "handleActivation": "Konto zostało aktywowane!",
+    "activation": "Aktywacja",
+    "account_activated": "Aktywacja przebiegła pomyślnie"
   }
-  
+}

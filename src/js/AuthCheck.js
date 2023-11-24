@@ -10,15 +10,19 @@ const AuthCheck = ({ children }) => {
   });
 
   const checkUserDetails = async (accessToken, setAuthState) => {
-    const user = await userDataCheck(accessToken);
+    try {
+      const user = await userDataCheck(accessToken);
 
-    setAuthState({
-      isAuthenticated: true,
-      user,
-      tokens: {
-        accessToken,
-      },
-    });
+      setAuthState({
+        isAuthenticated: true,
+        user,
+        tokens: {
+          accessToken,
+        },
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   const saveAuthTokens = (token, refreshToken, expires) => {
@@ -29,13 +33,17 @@ const AuthCheck = ({ children }) => {
   };
 
   const userDataCheck = async (accessToken) => {
-    const response = await axios.get(`/users/me`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-
-    return response.data.data;
+    try {
+      const response = await axios.get(`/users/me`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      
+      return response.data.data; 
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   useEffect(() => {
@@ -46,9 +54,10 @@ const AuthCheck = ({ children }) => {
 
       if (accessToken && refreshToken) {
         try {
-          checkUserDetails(accessToken, setAuthState);
+          await checkUserDetails(accessToken, setAuthState);
         } catch (error) {
           try {
+            console.error('Error fetching user details:', error);
             const refreshOld = localStorage.getItem('refreshToken');
 
             const response = await axios.post(
@@ -58,11 +67,11 @@ const AuthCheck = ({ children }) => {
             const { token, refreshToken, expires } = response.data;
             saveAuthTokens(token, refreshToken, expires);
 
-            checkUserDetails(userDataCheck, token, setAuthState);
+            await checkUserDetails(token, setAuthState);
 
           } catch (error) {
 
-            console.error('Error fetching user details:', error);
+            console.log("Error fetching refresh token");
 
             // If the request for user details results in a 401, it likely means the token has expired
             // Remove tokens from storage and redirect to the login page
