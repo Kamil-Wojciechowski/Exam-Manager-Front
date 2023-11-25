@@ -10,6 +10,7 @@ import 'toastr/build/toastr.min.css';
 import AuthCheck from './js/AuthCheck';
 
 import Navigation from './components/Navigation';
+import Bottom from './components/Bottom';
 import Login from './components/Login';
 import Recovery from './components/Recovery';
 import Dashboard from './components/Dashboard';
@@ -37,6 +38,8 @@ const App = () => {
                   <Route path="/login/activation/:activationToken" element={<ActivationToken authState={authState} />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
+
+                <Bottom />
               </>
             )}
           </AuthCheck>

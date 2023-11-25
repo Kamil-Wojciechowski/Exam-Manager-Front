@@ -21,7 +21,7 @@ const ActivationToken = ({ authState }) => {
 
         async function checkToken() {
             try {
-                let response = await axios.get("/auth/activation", {
+                await axios.get("/auth/activation", {
                     params: {
                         token: activationToken
                     }
@@ -87,7 +87,7 @@ const ActivationToken = ({ authState }) => {
             .filter(rule => !rule.validator(formData))
             .map(rule => rule.description);
 
-            return errors && errors.length > 0 ? errors : null;
+        return errors && errors.length > 0 ? errors : null;
 
 
     };
@@ -98,7 +98,7 @@ const ActivationToken = ({ authState }) => {
         if (pwdErrors) {
             setErrors(pwdErrors);
         } else {
-            try{
+            try {
                 await axios.post("/auth/activation", {
                     password: formData.password,
                     confirmedPassword: formData.confirmedPassword
@@ -113,7 +113,7 @@ const ActivationToken = ({ authState }) => {
                 navigate("/login")
             } catch (error) {
                 if (error.response && error.response.status === 400) {
-                    const errors = error.response.data.errors.map(item => item.defaultMessage) 
+                    const errors = error.response.data.errors.map(item => item.defaultMessage)
 
                     setErrors(errors);
                 }
@@ -125,35 +125,39 @@ const ActivationToken = ({ authState }) => {
 
 
     return (
-        <div>
-            <h2>{t('activation')}</h2>
-            <div style={{ color: 'red' }}>
-                {errors.length > 0 && (
-                    <ul>
-                        {errors.map((error, index) => (
-                            <li key={index}>{t(error)}</li>
-                        ))}
-                    </ul>
-                )}
-            </div>
+        <div id="activation_token">
+            <div className="centered-element">
+                <div id="activation_token-border">
+                    <h2>{t('activation')}</h2>
+                    <div style={{ color: 'red' }}>
+                        {errors.length > 0 && (
+                            <ul>
+                                {errors.map((error, index) => (
+                                    <li key={index}>{t(error)}</li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
 
-            <Form onSubmit={(e) => { e.preventDefault(); handleActivation(); }}>
-                <Form.Group>
-                    <Form.Label>
-                        {t('password')}:
-                        <Form.Control type='password' name='password' value={formData.password} onChange={handleChange} />
-                    </Form.Label>
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>
-                        {t('passwordConfirm')}:
-                        <Form.Control type='password' name='confirmedPassword' value={formData.confirmedPassword} onChange={handleChange} />
-                    </Form.Label>
-                </Form.Group>
-                <div>
-                    <Button variant='primary' type="submit">{t('send')}</Button>
+                    <Form onSubmit={(e) => { e.preventDefault(); handleActivation(); }}>
+                        <Form.Group>
+                            <Form.Label>
+                                {t('password')}:
+                                <Form.Control type='password' name='password' value={formData.password} onChange={handleChange} />
+                            </Form.Label>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>
+                                {t('passwordConfirm')}:
+                                <Form.Control type='password' name='confirmedPassword' value={formData.confirmedPassword} onChange={handleChange} />
+                            </Form.Label>
+                        </Form.Group>
+                        <div>
+                            <Button className="main_button" variant='primary' type="submit">{t('send')}</Button>
+                        </div>
+                    </Form>
                 </div>
-            </Form>
+            </div>
         </div>
     );
 };

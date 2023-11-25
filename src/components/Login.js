@@ -104,29 +104,33 @@ const Login = ({ authState }) => {
 
   // Render the login form if not authenticated
   return (
-    <div>
-      <h2>{t('login')}</h2>
-      <Form onSubmit={(e) => { e.preventDefault(); handleLogin(); }}>
-        <Form.Group>
-          <Form.Label>
-            Email:
-            <Form.Control type='email' name='email' value={formData.email} onChange={handleChange} />
-          </Form.Label>
-          <div style={{ color: 'red' }}>{errors.email}</div>
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>
-           {t('password')}:
-            <Form.Control type='password' name='password' value={formData.password} onChange={handleChange} />
-          </Form.Label>
-          <div style={{ color: 'red' }}>{errors.password}</div>
-        </Form.Group>
-        <div>
-          <Button variant='primary' type="submit">Zaloguj się</Button>
+    <div id="login">
+      <div className="centered-element">
+        <div id="login-border">
+          <h2>{t('login')}</h2>
+          <Form onSubmit={(e) => { e.preventDefault(); handleLogin(); }}>
+            <Form.Group>
+              <Form.Label>
+                Email:
+                <Form.Control type='email' name='email' value={formData.email} onChange={handleChange} />
+              </Form.Label>
+              <div style={{ color: 'red' }}>{errors.email}</div>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>
+                {t('password')}:
+                <Form.Control type='password' name='password' value={formData.password} onChange={handleChange} />
+              </Form.Label>
+              <div style={{ color: 'red' }}>{errors.password}</div>
+            </Form.Group>
+            <div>
+              <Button className="main_button" variant='primary' type="submit">Zaloguj się</Button>
+            </div>
+          </Form>
+          <div>
+            <a href='/login/recovery' >Zapomniałeś hasło?</a>
+          </div>
         </div>
-      </Form>
-      <div>
-        <a href='/login/recovery' >Zapomniałeś hasło?</a>
       </div>
     </div>
   );

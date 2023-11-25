@@ -1,31 +1,39 @@
 // Navigation.js
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { slide as Menu } from 'react-burger-menu'
 
 const Navigation = ({ authState }) => {
+  const navigate = useNavigate();
   const { isAuthenticated } = authState;
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
-  const changeLanguage = (language) => {
-    i18n.changeLanguage(language);
-  };
+  const handleLogout = () => {
+     localStorage.clear();
+
+     window.location.href = '/login';
+  }
 
   return (
     <div>
-      <nav>
-        <ul>
-          {isAuthenticated ? (
-            <li><Link to="/">{t('dashboard')}</Link></li>
-          ) : (
-            <li><Link to="/login">{t('login')}</Link></li>
+      {isAuthenticated ? (
+        <Menu>
+          <label id="hamburger-menu">
+            <nav id="sidebar_menu">
+              <h3 className='sidebar_menu-title'>Menu</h3>
+
+              <ul>
+                <li><Link onClick={handleLogout}>{t('logout')}</Link></li>
+                <li><Link to="/">{t('dashboard')}</Link></li>
+              </ul>
+
+            </nav>
+          </label>
+        </Menu>
+        ) : (
+            <></>
           )}
-        </ul>
-      </nav>
-      <div>
-        <button onClick={() => changeLanguage('pl')}>Polski</button>
-        <button onClick={() => changeLanguage('en')}>English</button>
-      </div>
     </div>
   );
 };

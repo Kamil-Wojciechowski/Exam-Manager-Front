@@ -2,6 +2,7 @@
   "translation": {
     "greeting": "Hello!",
     "login": "Login",
+    "logout": "Log out",
     "password": "Password",
     "passwordConfirm": "Repeat password",
     "send": "Send",

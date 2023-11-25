@@ -2,6 +2,7 @@
   "translation": {
     "greeting": "Witaj!",
     "login": "Zaloguj",
+    "logout": "Wyloguj",
     "dashboard": "Panel",
     "password": "Hasło",
     "passwordConfirm": "Powtórz hasło",
