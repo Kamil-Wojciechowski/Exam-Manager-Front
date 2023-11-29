@@ -1,0 +1,41 @@
+@import '~bootstrap/scss/bootstrap';
+@import './scss/mixins.scss';
+@import './scss/colors.scss';
+@import './scss/navigation.scss';
+@import './scss/auth.scss';
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+  padding: 0px;
+  margin: 0px;
+  font-size: 20px;
+  min-height: 100vh;
+  background-color: #FFFFFF;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.centered-element {
+	margin: 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.main_button {
+  background-color: $secondaryColor;
+  border: $mainColor;
+  &:hover, :focus, :active, :visited {
+    background-color: $hoverColor;
+    border: $mainColor;
+  }
+}

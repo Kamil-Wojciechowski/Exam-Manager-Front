@@ -1,0 +1,23 @@
+{
+  "translation": {
+    "greeting": "Hello!",
+    "login": "Login",
+    "logout": "Log out",
+    "password": "Password",
+    "passwordConfirm": "Repeat password",
+    "send": "Send",
+    "dashboard": "Dashboard",
+    "recovery": "Recovery",
+    "pwd_match": "Passwords must match",
+    "pwd_between": "Must be between 8 and 30 characters",
+    "pwd_upper": "Must contain at least one uppercase character",
+    "pwd_digit": "Must contain at least one digit",
+    "pwd_special": "Must contain at least one special character",
+    "pwd_qwerty": "Cannot contain more than 3 consecutive characters from the QWERTY keyboard",
+    "pwd_whitespace": "Must not contain whitespace characters",
+    "pwd_changed": "The password has been changed!",
+    "handleActivation": "Account has been activated!",
+    "activation": "Activation",
+    "account_activated": "Activation success"
+  }
+}
