@@ -7,15 +7,8 @@ import { useTranslation } from 'react-i18next';
 import axiosInt from '../js/AxiosInstance';
 import toastr from 'toastr';
 
-const Login = ({ authState }) => {
-  const navigate = useNavigate();
+const Login = () => {
   const { t } = useTranslation();
-
-  useEffect(() => {
-    if (authState.isAuthenticated) {
-      navigate('/');
-    }
-  }, [authState, navigate]);
 
   const [formData, setFormData] = useState({
     email: '',

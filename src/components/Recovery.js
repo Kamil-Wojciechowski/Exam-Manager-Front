@@ -3,13 +3,8 @@ import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import toastr from 'toastr';
 import axios from '../js/AxiosInstance';
-const Recovery = ({ authState }) => {
+const Recovery = () => {
     const navigate = useNavigate();
-    const { isAuthenticated } = authState;
-
-    if (isAuthenticated) {
-        navigate("/");
-    }
 
     const [formData, setFormData] = useState({
         email: '',

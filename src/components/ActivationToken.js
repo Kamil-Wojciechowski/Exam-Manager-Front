@@ -6,17 +6,13 @@ import axios from '../js/AxiosInstance';
 import { useTranslation } from 'react-i18next';
 import toastr from 'toastr';
 
-const ActivationToken = ({ authState }) => {
+const ActivationToken = () => {
     const navigate = useNavigate();
     const { activationToken } = useParams();
     const { t } = useTranslation();
 
 
     useEffect(() => {
-        if (authState.isAuthenticated) {
-            navigate("/");
-        }
-
         checkToken();
 
         async function checkToken() {
@@ -33,7 +29,7 @@ const ActivationToken = ({ authState }) => {
         }
 
 
-    }, [authState, navigate, activationToken])
+    }, [navigate, activationToken])
 
 
     const [formData, setFormData] = useState({

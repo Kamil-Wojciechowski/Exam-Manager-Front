@@ -1,12 +1,20 @@
 // NotFound.js
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { PacmanLoader } from 'react-spinners';
 
-const NotFound = () => {
+const NotFound = ({authState}) => {
+  const navigate = useNavigate();
+
+  if(authState.isAuthenticated) {
+    navigate("/")
+  } else {
+    navigate("/login");
+  }
+
+
   return (
-    <div>
-      <h2>404 - Not Found</h2>
-      {/* Add content for the 404 page */}
-    </div>
+    <div className='center-main'><PacmanLoader className='centered-element' color="#36d7b7" /></div>
   );
 };
 
