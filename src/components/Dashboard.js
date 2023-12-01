@@ -3,11 +3,16 @@ import axios from '../js/AxiosInstance';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { PacmanLoader } from 'react-spinners';
+import { Button } from 'react-bootstrap';
+import useAuthNavigate from '../js/AuthNavigate';
 
-const Dashboard = () => {
+const Dashboard = ({ authState }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [data, setData] = useState(null);
+
+  useAuthNavigate(authState.isAuthenticated, true);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,7 +29,7 @@ const Dashboard = () => {
   }, [navigate]);
 
   const handleOnClick = (item) => {
-    navigate("/" + item.id);
+    navigate("/studies/" + item.id);
   }
 
   if (data === null) {
@@ -37,6 +42,7 @@ const Dashboard = () => {
   
   return (
     <div className='dashboard'>
+      { authState.user.currentRoles.includes('ROLE_TEACHER') && <Button></Button> }
       {data.map((item, index) => (
         <div className='dashboard_item' key={item.id} onClick={() => {handleOnClick(item)}}>
           <h2>{item.name}</h2>

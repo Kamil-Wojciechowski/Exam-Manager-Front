@@ -57,6 +57,8 @@ const AuthCheck = ({ children }) => {
           console.error('Error fetching user details:', error);
           const refreshOld = localStorage.getItem('refreshToken');
 
+          localStorage.removeItem("accessToken");
+
           const response = await axios.post(`/auth/refresh/${refreshOld}`);
           const { token, refreshToken, expires } = response.data;
           saveAuthTokens(token, refreshToken, expires);

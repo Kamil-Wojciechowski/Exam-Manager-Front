@@ -3,10 +3,13 @@ import { Button, Form } from 'react-bootstrap';
 import axios from '../js/AxiosInstance';
 import { useNavigate, useParams } from 'react-router-dom';
 import toastr from 'toastr';
+import AuthNavigate from '../js/AuthNavigate';
 
-const StudiesDetailsUser = ({ userDetails }) => {
+const StudiesDetailsUser = ({ authState }) => {
     const { studiesId } = useParams();
     const navigate = useNavigate();
+
+    AuthNavigate(authState.isAuthenticated, true);
 
     const [staticData, setStatic] = useState({
         name: '',
@@ -26,6 +29,11 @@ const StudiesDetailsUser = ({ userDetails }) => {
     const [disabled, setDisabled] = useState(true);
 
     useEffect(() => {
+        if(isNaN(+studiesId)) {
+            navigate("/");
+            return;
+        }
+
         const getStudies = async () => {
             await axios.get("/studies/" + studiesId).then((res) => {
                 setFormData(res.data.data);
@@ -41,7 +49,7 @@ const StudiesDetailsUser = ({ userDetails }) => {
 
         getStudies();
 
-        if (userDetails.googleConnected) {
+        if (authState.user.googleConnected) {
             getClassrooms();
         }
 
@@ -112,7 +120,7 @@ const StudiesDetailsUser = ({ userDetails }) => {
                                         <p>{staticData.classroomName}</p>
                                     </>
                                     :
-                                    (userDetails.googleConnected && !disabled) ? <Form.Label>
+                                    (authState.user.googleConnected && !disabled) ? <Form.Label>
                                         <p>Classroom:</p>
                                         <Form.Control as="select" value={formData.classroomId ? formData.classroomId : ''} onChange={handleOptionChange}>
                                             <option value="" disabled>Select an item</option>
