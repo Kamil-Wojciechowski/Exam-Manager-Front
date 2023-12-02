@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { PacmanLoader } from 'react-spinners';
 import { Button } from 'react-bootstrap';
 import useAuthNavigate from '../js/AuthNavigate';
+import StudiesForm from './forms/StudiesForm';
 
 const Dashboard = ({ authState }) => {
   const navigate = useNavigate();
@@ -13,12 +14,20 @@ const Dashboard = ({ authState }) => {
 
   useAuthNavigate(authState.isAuthenticated, true);
 
+  const [showModal, setShowModal] = useState(false);
+
+  const openModal = () => {
+      setShowModal(true);
+  };
+
+  const closeModal = () => {
+      setShowModal(false);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get("/studies");
-        // Assuming the data is in response.data.data
         setData(response.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -37,17 +46,22 @@ const Dashboard = ({ authState }) => {
   }
 
   if (data.data == []) {
-    return <div className='center-main'><div className='centered-element'/>Brak danych</div>
+    return <div className='center-main'><div className='centered-element' />Brak danych</div>
   }
-  
+
   return (
-    <div className='dashboard'>
-      { authState.user.currentRoles.includes('ROLE_TEACHER') && <Button></Button> }
-      {data.map((item, index) => (
-        <div className='dashboard_item' key={item.id} onClick={() => {handleOnClick(item)}}>
-          <h2>{item.name}</h2>
-        </div>
-      ))}
+    <div className='content'>
+      {authState.user.currentRoles.includes('ROLE_TEACHER') && <Button variant="primary" onClick={() => {openModal();}}>Dodaj</Button>}
+      <StudiesForm authState={authState} isCreate={true} showModal={showModal} closeModal={closeModal}></StudiesForm>
+
+
+      <div className='dashboard'>
+        {data.map((item, index) => (
+          <div className='dashboard_item' key={item.id} onClick={() => { handleOnClick(item) }}>
+            <h2>{item.name}</h2>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
