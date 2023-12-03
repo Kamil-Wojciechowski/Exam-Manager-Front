@@ -1,13 +1,18 @@
 // NotFound.js
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const NotFound = () => {
-  return (
-    <div>
-      <h2>404 - Not Found</h2>
-      {/* Add content for the 404 page */}
-    </div>
-  );
+
+const NotFound = ({ authState }) => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if(authState.isAuthenticated) {
+      navigate("/")
+    } else {
+      navigate("/login");
+    }
+  }, [navigate]);
 };
 
 export default NotFound;

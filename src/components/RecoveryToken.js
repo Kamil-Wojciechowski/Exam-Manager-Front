@@ -5,18 +5,16 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../js/AxiosInstance';
 import { useTranslation } from 'react-i18next';
 import toastr from 'toastr';
+import AuthNavigate from '../js/AuthNavigate';
 
 const Recovery = ({ authState }) => {
     const navigate = useNavigate();
     const { recoveryToken } = useParams();
     const { t } = useTranslation();
 
+    AuthNavigate(authState.isAuthenticated, false);
 
     useEffect(() => {
-        if (authState.isAuthenticated) {
-            navigate("/");
-        }
-
         checkToken();
 
         async function checkToken() {

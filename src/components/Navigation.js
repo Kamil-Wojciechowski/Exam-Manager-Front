@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { slide as Menu } from 'react-burger-menu'
 
 const Navigation = ({ authState }) => {
-  const navigate = useNavigate();
   const { isAuthenticated } = authState;
   const { t } = useTranslation();
 
@@ -18,7 +17,7 @@ const Navigation = ({ authState }) => {
   return (
     <div>
       {isAuthenticated ? (
-        <Menu>
+        <Menu className='test'>
           <label id="hamburger-menu">
             <nav id="sidebar_menu">
               <h3 className='sidebar_menu-title'>Menu</h3>

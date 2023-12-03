@@ -3,6 +3,7 @@
 @import './scss/colors.scss';
 @import './scss/navigation.scss';
 @import './scss/auth.scss';
+@import './scss/dashboard.scss';
 
 * {
 	margin: 0;
@@ -21,6 +22,11 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.center-main {
+  position: relative;
+	height: 100vh;
 }
 
 .centered-element {

@@ -5,18 +5,16 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../js/AxiosInstance';
 import { useTranslation } from 'react-i18next';
 import toastr from 'toastr';
+import AuthNavigate from '../js/AuthNavigate';
 
 const ActivationToken = ({ authState }) => {
     const navigate = useNavigate();
     const { activationToken } = useParams();
     const { t } = useTranslation();
 
+    AuthNavigate(authState.isAuthenticated, false);
 
     useEffect(() => {
-        if (authState.isAuthenticated) {
-            navigate("/");
-        }
-
         checkToken();
 
         async function checkToken() {
@@ -33,7 +31,7 @@ const ActivationToken = ({ authState }) => {
         }
 
 
-    }, [authState, navigate, activationToken])
+    }, [navigate, activationToken])
 
 
     const [formData, setFormData] = useState({

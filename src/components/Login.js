@@ -6,16 +6,12 @@ import { useTranslation } from 'react-i18next';
 
 import axiosInt from '../js/AxiosInstance';
 import toastr from 'toastr';
+import AuthNavigate from '../js/AuthNavigate';
 
 const Login = ({ authState }) => {
-  const navigate = useNavigate();
   const { t } = useTranslation();
 
-  useEffect(() => {
-    if (authState.isAuthenticated) {
-      navigate('/');
-    }
-  }, [authState, navigate]);
+  AuthNavigate(authState.isAuthenticated, false);
 
   const [formData, setFormData] = useState({
     email: '',
