@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import debounce from 'lodash.debounce';
 import axios from '../js/AxiosInstance';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -6,6 +7,7 @@ import { PacmanLoader } from 'react-spinners';
 import { Button } from 'react-bootstrap';
 import useAuthNavigate from '../js/AuthNavigate';
 import StudiesForm from './forms/StudiesForm';
+import Pagination from './general/Pagination';
 
 const Dashboard = ({ authState }) => {
   const navigate = useNavigate();
@@ -16,6 +18,11 @@ const Dashboard = ({ authState }) => {
 
   const [showModal, setShowModal] = useState(false);
 
+  const [pageDetails, setPageDetails] = useState({
+    page: 1,
+    pages: 0
+  });
+
   const openModal = () => {
       setShowModal(true);
   };
@@ -24,22 +31,44 @@ const Dashboard = ({ authState }) => {
       setShowModal(false);
   };
 
+  const fetchData = async () => {
+    try {
+      const response = await axios.get("/studies", {
+        params: {
+          "page": pageDetails.page - 1
+        }
+      });
+  
+      const responseData = response.data;
+      setData(responseData.data);
+      setPageDetails({
+        page: responseData.page + 1,
+        pages: responseData.pages
+      });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  
+  
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("/studies");
-        setData(response.data.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
     fetchData();
-  }, [navigate]);
+  }, [navigate, pageDetails.page]);
+  
+  
 
   const handleOnClick = (item) => {
     navigate("/studies/" + item.id);
   }
+
+  const handlePageChange = debounce((newPage) => {
+    setPageDetails({
+      ...pageDetails,
+      page: newPage
+    });
+  }, 100);
+  
+
 
   if (data === null) {
     return <div className='center-main'><PacmanLoader className='centered-element' color="#36d7b7" /></div>;
@@ -62,6 +91,8 @@ const Dashboard = ({ authState }) => {
           </div>
         ))}
       </div>
+
+      <Pagination total={pageDetails.pages} currentPage={pageDetails.page} onPageChange={handlePageChange} />
     </div>
   );
 };
