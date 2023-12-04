@@ -268,7 +268,7 @@ const StudiesDetailsUser = ({ authState }) => {
                         </Form>
                     </Modal>
 
-                    <StudiesUserForm showModal={showUserModal} closeModal={closeModal} addedUsers={users} studiesId={studiesId} />
+                    { authState.user.currentRoles.includes('ROLE_TEACHER') && <StudiesUserForm showModal={showUserModal} closeModal={closeModal} addedUsers={users} studiesId={studiesId} />}
 
                 </div>
             </div>

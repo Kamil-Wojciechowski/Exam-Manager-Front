@@ -38,18 +38,12 @@ const StudiesUserForm = ({ showModal, closeModal, addedUsers, studiesId }) => {
                 page: res.data.page + 1,
                 pages: res.data.pages
             });
-            console.log(res.data);
         });
     }
 
     useEffect(() => {
         getUsers();
     }, [pageDetails.page])
-
-    useEffect(() => {
-        // Add logic to handle changes in usersToAdd
-        console.log("usersToAdd changed:", usersToAdd);
-    }, [usersToAdd]);
 
     const handlePageChange = debounce((newPage) => {
         setPageDetails({

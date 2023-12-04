@@ -18,6 +18,7 @@
     "pwd_changed": "Hasło zostało zmienione!",
     "handleActivation": "Konto zostało aktywowane!",
     "activation": "Aktywacja",
-    "account_activated": "Aktywacja przebiegła pomyślnie"
+    "account_activated": "Aktywacja przebiegła pomyślnie",
+    "database": "Baza danych"
   }
 }

@@ -19,6 +19,8 @@ import NotFound from './components/NotFound';
 import ActivationToken from './components/ActivationToken';
 import { PacmanLoader } from 'react-spinners';
 import StudiesDetailsUser from './components/StudiesDetailsUser';
+import Database from './components/Database';
+import DatabaseId from './components/DatabaseId';
 
 
 const App = () => {
@@ -38,6 +40,8 @@ const App = () => {
                   <Navigation authState={authState} />
                   <Routes>
                     <Route path="/" element={<Dashboard authState={authState} />} />
+                    <Route path="/admin/database" element={<Database authState={authState} />} />
+                    <Route path="/admin/database/:databaseId" element={<DatabaseId authState={authState} />} />
                     <Route path="*" element={<NotFound authState={authState} />} />
                     <Route path="studies/:studiesId" element={<StudiesDetailsUser authState={authState} />} />
                     <Route path="/login" element={<Login authState={authState} />} />

@@ -25,6 +25,12 @@ const Navigation = ({ authState }) => {
               <ul>
                 <li><Link onClick={handleLogout}>{t('logout')}</Link></li>
                 <li><Link to="/">{t('dashboard')}</Link></li>
+                {authState.user.currentRoles.includes('ROLE_TEACHER') && 
+                
+                  <li><Link to="/admin/database">{t('database')}</Link></li>
+                
+                }
+                
               </ul>
 
             </nav>

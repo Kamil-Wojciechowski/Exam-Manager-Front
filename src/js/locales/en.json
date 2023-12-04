@@ -18,6 +18,7 @@
     "pwd_changed": "The password has been changed!",
     "handleActivation": "Account has been activated!",
     "activation": "Activation",
-    "account_activated": "Activation success"
+    "account_activated": "Activation success",
+    "database": "Database"
   }
 }

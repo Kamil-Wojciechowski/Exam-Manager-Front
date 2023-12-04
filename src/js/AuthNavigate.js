@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const useAuthNavigate = (isAuthenticated, protectedRoute) => {
+const useAuthNavigate = (isAuthenticated, protectedRoute, teacher, teacherRoute) => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -9,6 +9,12 @@ const useAuthNavigate = (isAuthenticated, protectedRoute) => {
       if (!protectedRoute) {
         navigate('/');
       }
+
+      if(teacherRoute && !teacher) {
+        navigate("/");
+      } 
+
+      
     } else {
       if (protectedRoute) {
         navigate('/login');
