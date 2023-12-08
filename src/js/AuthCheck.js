@@ -4,6 +4,7 @@ import axios from '../js/AxiosInstance';
 const AuthCheck = ({ children }) => {
   const [authState, setAuthState] = useState({
     isAuthenticated: null,
+    isTeacher: null,
     user: null,
     tokens: null,
   });
@@ -35,6 +36,7 @@ const AuthCheck = ({ children }) => {
 
       setAuthState({
         isAuthenticated: true,
+        isTeacher: user.currentRoles.includes('ROLE_TEACHER'),
         user,
         tokens: {
           accessToken,
@@ -72,6 +74,7 @@ const AuthCheck = ({ children }) => {
             localStorage.removeItem('refreshToken');
             setAuthState({
               isAuthenticated: false,
+              isTeacher: false,
               user: null,
               tokens: null,
             });
@@ -81,6 +84,7 @@ const AuthCheck = ({ children }) => {
     } else {
       setAuthState({
         isAuthenticated: false,
+        isTeacher: false,
         user: null,
         tokens: null,
       });

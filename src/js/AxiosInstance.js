@@ -6,6 +6,9 @@ const AxiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  validateStatus: function (status) {
+    return status >= 200 && status <= 302
+  }
 });
 
 AxiosInstance.defaults.timeout = 10000;

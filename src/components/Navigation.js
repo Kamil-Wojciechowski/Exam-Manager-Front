@@ -8,10 +8,12 @@ const Navigation = ({ authState }) => {
   const { isAuthenticated } = authState;
   const { t } = useTranslation();
 
-  const handleLogout = () => {
-     localStorage.clear();
+  const containRole = authState.user.currentRoles.includes('ROLE_TEACHER');
 
-     window.location.href = '/login';
+  const handleLogout = () => {
+    localStorage.clear();
+
+    window.location.href = '/login';
   }
 
   return (
@@ -25,20 +27,25 @@ const Navigation = ({ authState }) => {
               <ul>
                 <li><Link onClick={handleLogout}>{t('logout')}</Link></li>
                 <li><Link to="/">{t('dashboard')}</Link></li>
-                {authState.user.currentRoles.includes('ROLE_TEACHER') && 
-                
+                {containRole &&
+
                   <li><Link to="/admin/database">{t('database')}</Link></li>
-                
+
                 }
-                
+                {(authState.isTeacher) &&
+                  (authState.user.googleConnected ? (
+                    <li><Link to="/admin/google/disonnect">Disconnect google account</Link></li>
+                  ) : (
+                    <li><Link to="/admin/google/connect">Connect google account</Link></li>
+                  ))}
               </ul>
 
             </nav>
           </label>
         </Menu>
-        ) : (
-            <></>
-          )}
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

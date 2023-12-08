@@ -21,6 +21,9 @@ import { PacmanLoader } from 'react-spinners';
 import StudiesDetailsUser from './components/StudiesDetailsUser';
 import Database from './components/Database';
 import DatabaseId from './components/DatabaseId';
+import GoogleConnect from './components/GoogleConnect';
+import GoogleDisconnect from './components/GoogleDisconnect';
+import GoogleCallback from './components/GoogleCallback';
 
 
 const App = () => {
@@ -42,8 +45,10 @@ const App = () => {
                     <Route path="/" element={<Dashboard authState={authState} />} />
                     <Route path="/admin/database" element={<Database authState={authState} />} />
                     <Route path="/admin/database/:databaseId" element={<DatabaseId authState={authState} />} />
-                    <Route path="*" element={<NotFound authState={authState} />} />
-                    <Route path="studies/:studiesId" element={<StudiesDetailsUser authState={authState} />} />
+                    <Route path="/admin/google/connect" element={<GoogleConnect authState={authState} />} />
+                    <Route path="/admin/google/disonnect" element={<GoogleDisconnect authState={authState} />} />
+                    <Route path="/callback" element={<GoogleCallback authState={authState} />} />
+                    <Route path="/studies/:studiesId" element={<StudiesDetailsUser authState={authState} />} />
                     <Route path="/login" element={<Login authState={authState} />} />
                     <Route path="/login/recovery" element={<Recovery authState={authState} />} />
                     <Route path="/login/recovery/:recoveryToken" element={<RecoveryToken authState={authState} />} />
