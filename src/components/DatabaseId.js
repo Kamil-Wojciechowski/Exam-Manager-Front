@@ -3,8 +3,14 @@ import axios from "../js/AxiosInstance";
 import { useNavigate, useParams } from "react-router-dom";
 import useAuthNavigate from "../js/AuthNavigate";
 import DatabaseForm from "./forms/DatabaseForm";
-import { Button, Modal } from "react-bootstrap";
+import { Button, Modal, Table } from "react-bootstrap";
 import toastr from "toastr";
+import debounce from "lodash.debounce";
+import Pagination from "./general/Pagination";
+import { FaCrown } from "react-icons/fa";
+import { TiUserDelete } from "react-icons/ti";
+import { CiEdit } from "react-icons/ci";
+
 
 const DatabaseId = ({ authState }) => {
 
@@ -18,15 +24,42 @@ const DatabaseId = ({ authState }) => {
     const [databaseDetails, setDatabaseDetails] = useState({
         name: ""
     });
+
     const [ showEditModal, setShowEditModal ] = useState(false);
     const [ showDeleteModal, setShowDeleteModal ] = useState(false); 
+    const [pageDetails, setPageDetails] = useState({
+        page: 1,
+        pages: 0
+    });
+
+    const closeModalUser = () => {
+        setState(state + 1);
+    }
+
 
     useEffect(() => {
         const getDatabase = async () => {
             await axios.get("/questions/metadata/" + databaseId).then((res) => {
                 setDatabaseDetails(res.data.data);
             })
-        }
+        };
+
+        // const getDatabaseUsers = async () => {
+            // await axios.get("/questions/metadata/" + databaseId + "/ownerships", {
+            //     params: {
+            //         "page": pageDetails.page - 1            
+            //     }
+            // })
+
+                // const owner = res.data.data.some((element) => {
+                //     return element.ownership === "OWNER" && authState.user.id === element.user.id;
+                //   });
+
+                //   setOwner(owner);
+            // })
+        // };
+
+        // getDatabaseUsers();
 
         getDatabase();
     }, [state]);
@@ -56,11 +89,13 @@ const DatabaseId = ({ authState }) => {
         })
     }
 
+
     return (
         <div className='center-main'>
+            <div className='centered-element'>
+                <Button onClick={() => {navigate("/admin/database/" + databaseId + "/questions")}}>Pytania</Button>
             <Button onClick={() => {setShowEditModal(true)}}>Edytuj</Button>
             <Button onClick={() => {setShowDeleteModal(true)}}>Usuń</Button>
-            <div className='centered-element'>
                 <p>Name:</p>
                 <p>{databaseDetails.name}</p>
 

@@ -24,6 +24,7 @@ import DatabaseId from './components/DatabaseId';
 import GoogleConnect from './components/GoogleConnect';
 import GoogleDisconnect from './components/GoogleDisconnect';
 import GoogleCallback from './components/GoogleCallback';
+import DatabaseQuestion from './components/DatabaseQuestion';
 
 
 const App = () => {
@@ -45,6 +46,7 @@ const App = () => {
                     <Route path="/" element={<Dashboard authState={authState} />} />
                     <Route path="/admin/database" element={<Database authState={authState} />} />
                     <Route path="/admin/database/:databaseId" element={<DatabaseId authState={authState} />} />
+                    <Route path="/admin/database/:databaseId/questions" element={<DatabaseQuestion authState={authState} />} />
                     <Route path="/admin/google/connect" element={<GoogleConnect authState={authState} />} />
                     <Route path="/admin/google/disonnect" element={<GoogleDisconnect authState={authState} />} />
                     <Route path="/callback" element={<GoogleCallback authState={authState} />} />

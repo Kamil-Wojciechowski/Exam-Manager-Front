@@ -8,8 +8,6 @@ const Navigation = ({ authState }) => {
   const { isAuthenticated } = authState;
   const { t } = useTranslation();
 
-  const containRole = authState.user.currentRoles.includes('ROLE_TEACHER');
-
   const handleLogout = () => {
     localStorage.clear();
 
@@ -27,7 +25,7 @@ const Navigation = ({ authState }) => {
               <ul>
                 <li><Link onClick={handleLogout}>{t('logout')}</Link></li>
                 <li><Link to="/">{t('dashboard')}</Link></li>
-                {containRole &&
+                {authState.isTeacher &&
 
                   <li><Link to="/admin/database">{t('database')}</Link></li>
 

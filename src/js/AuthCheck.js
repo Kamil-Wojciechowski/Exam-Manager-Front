@@ -59,8 +59,6 @@ const AuthCheck = ({ children }) => {
           console.error('Error fetching user details:', error);
           const refreshOld = localStorage.getItem('refreshToken');
 
-          localStorage.removeItem("accessToken");
-
           const response = await axios.post(`/auth/refresh/${refreshOld}`);
           const { token, refreshToken, expires } = response.data;
           saveAuthTokens(token, refreshToken, expires);
@@ -69,16 +67,15 @@ const AuthCheck = ({ children }) => {
         } catch (error) {
           console.log("Error fetching refresh token");
 
-          if (error.response && error.response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-            setAuthState({
-              isAuthenticated: false,
-              isTeacher: false,
-              user: null,
-              tokens: null,
-            });
-          }
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
+          setAuthState({
+            isAuthenticated: false,
+            isTeacher: false,
+            user: null,
+            tokens: null,
+          });
+
         }
       }
     } else {
