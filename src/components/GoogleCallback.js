@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import useAuthNavigate from "../js/AuthNavigate";
 import axios from "../js/AxiosInstance";
 import { useNavigate } from "react-router-dom";

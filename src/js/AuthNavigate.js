@@ -20,7 +20,7 @@ const useAuthNavigate = (isAuthenticated, protectedRoute, teacher, teacherRoute)
         navigate('/login');
       }
     }
-  }, [isAuthenticated, protectedRoute, navigate]);
+  }, [isAuthenticated, protectedRoute, teacherRoute, teacher, navigate]);
 };
 
 export default useAuthNavigate;

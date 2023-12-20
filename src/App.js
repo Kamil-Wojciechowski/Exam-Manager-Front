@@ -25,6 +25,8 @@ import GoogleConnect from './components/GoogleConnect';
 import GoogleDisconnect from './components/GoogleDisconnect';
 import GoogleCallback from './components/GoogleCallback';
 import DatabaseQuestion from './components/DatabaseQuestion';
+import DatabaseQuestionAnswer from './components/DatabaseQuestionAnswer';
+import StudiesExams from './components/StudiesExams';
 
 
 const App = () => {
@@ -47,10 +49,12 @@ const App = () => {
                     <Route path="/admin/database" element={<Database authState={authState} />} />
                     <Route path="/admin/database/:databaseId" element={<DatabaseId authState={authState} />} />
                     <Route path="/admin/database/:databaseId/questions" element={<DatabaseQuestion authState={authState} />} />
+                    <Route path="/admin/database/:databaseId/questions/:questionId" element={<DatabaseQuestionAnswer authState={authState} />} />
                     <Route path="/admin/google/connect" element={<GoogleConnect authState={authState} />} />
                     <Route path="/admin/google/disonnect" element={<GoogleDisconnect authState={authState} />} />
                     <Route path="/callback" element={<GoogleCallback authState={authState} />} />
                     <Route path="/studies/:studiesId" element={<StudiesDetailsUser authState={authState} />} />
+                    <Route path="/studies/:studiesId/exams" element={<StudiesExams authState={authState} />} />
                     <Route path="/login" element={<Login authState={authState} />} />
                     <Route path="/login/recovery" element={<Recovery authState={authState} />} />
                     <Route path="/login/recovery/:recoveryToken" element={<RecoveryToken authState={authState} />} />

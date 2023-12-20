@@ -25,7 +25,7 @@ const StudiesForm = ({ authState, studiesData, studiesId, isCreate, showModal, c
             setFormData(studiesData);
         }
 
-        if (authState.user.googleConnected) {
+        if (formData.owner && authState.user.googleConnected) {
             getClassrooms();
         }
 

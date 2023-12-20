@@ -3,13 +3,8 @@ import axios from "../js/AxiosInstance";
 import { useNavigate, useParams } from "react-router-dom";
 import useAuthNavigate from "../js/AuthNavigate";
 import DatabaseForm from "./forms/DatabaseForm";
-import { Button, Modal, Table } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import toastr from "toastr";
-import debounce from "lodash.debounce";
-import Pagination from "./general/Pagination";
-import { FaCrown } from "react-icons/fa";
-import { TiUserDelete } from "react-icons/ti";
-import { CiEdit } from "react-icons/ci";
 
 
 const DatabaseId = ({ authState }) => {
@@ -27,14 +22,14 @@ const DatabaseId = ({ authState }) => {
 
     const [ showEditModal, setShowEditModal ] = useState(false);
     const [ showDeleteModal, setShowDeleteModal ] = useState(false); 
-    const [pageDetails, setPageDetails] = useState({
-        page: 1,
-        pages: 0
-    });
+    // const [pageDetails, setPageDetails] = useState({
+    //     page: 1,
+    //     pages: 0
+    // });
 
-    const closeModalUser = () => {
-        setState(state + 1);
-    }
+    // const closeModalUser = () => {
+    //     setState(state + 1);
+    // }
 
 
     useEffect(() => {

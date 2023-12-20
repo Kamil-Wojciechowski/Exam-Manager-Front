@@ -23,27 +23,29 @@ const StudiesUserForm = ({ showModal, closeModal, addedUsers, studiesId }) => {
 
     const [usersToAdd, setUsersToAdd] = useState([]);
 
-    const getUsers = async () => {
-        axios.get("/users", {
-            params: {
-                role: filters.role,
-                firstname: filters.firstname,
-                lastname: filters.lastname,
-                email: filters.email,
-                page: pageDetails.page - 1
-            }
-        }).then((res) => {
-            setUsers(res.data.data);
-            setPageDetails({
-                page: res.data.page + 1,
-                pages: res.data.pages
-            });
-        });
-    }
+    const [state, setState] = useState(1);
 
     useEffect(() => {
+        const getUsers =  async () => {
+            axios.get("/users", {
+                params: {
+                    role: filters.role,
+                    firstname: filters.firstname,
+                    lastname: filters.lastname,
+                    email: filters.email,
+                    page: pageDetails.page - 1
+                }
+            }).then((res) => {
+                setUsers(res.data.data);
+                setPageDetails({
+                    page: res.data.page + 1,
+                    pages: res.data.pages
+                });
+            });
+        }
+
         getUsers();
-    }, [pageDetails.page])
+    }, [pageDetails.page, state])
 
     const handlePageChange = debounce((newPage) => {
         setPageDetails({
@@ -60,7 +62,7 @@ const StudiesUserForm = ({ showModal, closeModal, addedUsers, studiesId }) => {
     };
 
     const searchItems = () => {
-        getUsers();
+        setState(state+1);
     }
 
     const handleUsers = (user) => {

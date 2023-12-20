@@ -148,8 +148,10 @@ const StudiesDetailsUser = ({ authState }) => {
     return (
         <div className='center-main centered-element'>
             <div className='centered-element'>
+                
                 <Button type="button" hidden={showUsers} onClick={() => { setShowDetails(false); setShowUsers(true) }}>Show details</Button>
                 <Button type="button" hidden={showDetails} onClick={() => { setShowDetails(true); setShowUsers(false) }}>Show Users</Button>
+                <Button onClick={() => {navigate("/studies/" + studiesId + "/exams")}}>Egzaminy</Button>
 
                 <div hidden={showDetails}>
                     {formData.owner && <Button type='button' onClick={() => { openModal() }}>Edit</Button>}
@@ -207,7 +209,7 @@ const StudiesDetailsUser = ({ authState }) => {
                                         <td>{item.id}</td>
                                         <td>{item.owner && <FaCrown size={25} />} {item.user.firstname}</td>
                                         <td>{item.user.lastname}</td>
-                                        {(formData.owner && item.user.id != authState.user.id) && <td>
+                                        {(formData.owner && item.user.id !== authState.user.id) && <td>
                                             <TiUserDelete onClick={() => {
                                                 setStudiesUser(item);
                                                 setUserDeleteModal(true)
