@@ -1,6 +1,6 @@
 // Navigation.js
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { slide as Menu } from 'react-burger-menu'
 
@@ -9,9 +9,9 @@ const Navigation = ({ authState }) => {
   const { t } = useTranslation();
 
   const handleLogout = () => {
-     localStorage.clear();
+    localStorage.clear();
 
-     window.location.href = '/login';
+    window.location.href = '/login';
   }
 
   return (
@@ -25,14 +25,25 @@ const Navigation = ({ authState }) => {
               <ul>
                 <li><Link onClick={handleLogout}>{t('logout')}</Link></li>
                 <li><Link to="/">{t('dashboard')}</Link></li>
+                {authState.isTeacher &&
+
+                  <li><Link to="/admin/database">{t('database')}</Link></li>
+
+                }
+                {(authState.isTeacher) &&
+                  (authState.user.googleConnected ? (
+                    <li><Link to="/admin/google/disonnect">Disconnect google account</Link></li>
+                  ) : (
+                    <li><Link to="/admin/google/connect">Connect google account</Link></li>
+                  ))}
               </ul>
 
             </nav>
           </label>
         </Menu>
-        ) : (
-            <></>
-          )}
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

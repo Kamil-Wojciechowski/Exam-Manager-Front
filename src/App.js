@@ -19,6 +19,16 @@ import NotFound from './components/NotFound';
 import ActivationToken from './components/ActivationToken';
 import { PacmanLoader } from 'react-spinners';
 import StudiesDetailsUser from './components/StudiesDetailsUser';
+import Database from './components/Database';
+import DatabaseId from './components/DatabaseId';
+import GoogleConnect from './components/GoogleConnect';
+import GoogleDisconnect from './components/GoogleDisconnect';
+import GoogleCallback from './components/GoogleCallback';
+import DatabaseQuestion from './components/DatabaseQuestion';
+import DatabaseQuestionAnswer from './components/DatabaseQuestionAnswer';
+import StudiesExams from './components/StudiesExams';
+import ExamParticipate from './components/ExamParticipate';
+import ExamResults from './components/ExamResults';
 
 
 const App = () => {
@@ -38,8 +48,17 @@ const App = () => {
                   <Navigation authState={authState} />
                   <Routes>
                     <Route path="/" element={<Dashboard authState={authState} />} />
-                    <Route path="*" element={<NotFound authState={authState} />} />
-                    <Route path="studies/:studiesId" element={<StudiesDetailsUser authState={authState} />} />
+                    <Route path="/admin/database" element={<Database authState={authState} />} />
+                    <Route path="/admin/database/:databaseId" element={<DatabaseId authState={authState} />} />
+                    <Route path="/admin/database/:databaseId/questions" element={<DatabaseQuestion authState={authState} />} />
+                    <Route path="/admin/database/:databaseId/questions/:questionId" element={<DatabaseQuestionAnswer authState={authState} />} />
+                    <Route path="/admin/google/connect" element={<GoogleConnect authState={authState} />} />
+                    <Route path="/admin/google/disonnect" element={<GoogleDisconnect authState={authState} />} />
+                    <Route path="/callback" element={<GoogleCallback authState={authState} />} />
+                    <Route path="/studies/:studiesId" element={<StudiesDetailsUser authState={authState} />} />
+                    <Route path="/studies/:studiesId/exams" element={<StudiesExams authState={authState} />} />
+                    <Route path="/studies/:studiesId/exams/:examId/participate" element={<ExamParticipate authState={authState} />} />
+                    <Route path="/studies/:studiesId/exams/:examId" element={<ExamResults authState={authState} />} />
                     <Route path="/login" element={<Login authState={authState} />} />
                     <Route path="/login/recovery" element={<Recovery authState={authState} />} />
                     <Route path="/login/recovery/:recoveryToken" element={<RecoveryToken authState={authState} />} />

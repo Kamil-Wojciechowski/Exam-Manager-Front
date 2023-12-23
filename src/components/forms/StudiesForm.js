@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Modal } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
 import axios from '../../js/AxiosInstance';
 import toastr from 'toastr';
 
-const StudiesForm = ({ authState, studiesData, studiesId, isCreate, showModal, closeModal }) => {
+const StudiesForm = ({ authState, studiesData, studiesId, isCreate, showModal, closeModal, changeState }) => {
     const [formData, setFormData] = useState({
         name: '',
         classroomId: '',
@@ -26,7 +25,7 @@ const StudiesForm = ({ authState, studiesData, studiesId, isCreate, showModal, c
             setFormData(studiesData);
         }
 
-        if (authState.user.googleConnected) {
+        if (formData.owner && authState.user.googleConnected) {
             getClassrooms();
         }
 
