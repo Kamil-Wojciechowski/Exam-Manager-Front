@@ -1,9 +1,12 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useAuthNavigate from "../js/AuthNavigate";
 import { useEffect, useState } from "react";
 import axios from "../js/AxiosInstance";
 import toastr from 'toastr';
 import { Button, Form, Modal, Table } from "react-bootstrap";
+import { FaEdit, FaBackward, FaEye  } from "react-icons/fa";
+import { IoTrashBin } from "react-icons/io5";
+
 
 const StudiesExams = ({ authState }) => {
     useAuthNavigate(authState.isAuthenticated, true);
@@ -18,10 +21,13 @@ const StudiesExams = ({ authState }) => {
         questionPerUser: 0,
     });
 
+    const navigate = useNavigate();
     const [exams, setExams] = useState([]);
     const [databases, setDatabases] = useState([]);
     const [owner, setOwner] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [archived, setArchived] = useState(false);
     const [state, setState] = useState(1);
 
     useEffect(() => {
@@ -29,10 +35,12 @@ const StudiesExams = ({ authState }) => {
             await axios.get("/studies/" + studiesId + "/exams", {
                 params: {
                     orderBy: "startAt",
-                    order: "desc"
+                    order: "desc",
+                    archived: archived
                 }
             }).then(res => {
                 setExams(res.data.data);
+                console.log(res.data.data);
             })
         };
 
@@ -69,7 +77,7 @@ const StudiesExams = ({ authState }) => {
         if(authState.isTeacher && owner) {
             fetchAllDatabases();
         }
-    }, [owner, state]);
+    }, [owner, state, archived]);
 
     const formatDate = (dateString) => {
         if (dateString) {
@@ -86,36 +94,140 @@ const StudiesExams = ({ authState }) => {
         });
     };
 
-    const handleSubmit = async () => {
-        console.log(formData);
-
+    const prepareData = () => {
         const questionMetadataId = parseInt(formData.questionMetadataId, 10);
 
-
-        const examData = {
+        return {
             name: formData.name,
             questionMetadata: {
               id: questionMetadataId,
             },
+            archived: false,
             startAt: formData.startAt,
             endAt: formData.endAt,
             questionPerUser: formData.questionPerUser,
           };
+    }
+
+    const handleSubmit = async () => {
+            const examData = prepareData();
       
-          await axios.post(`/studies/${studiesId}/exams`, examData).then(res => {
+          if(formData.id) {
+            await axios.patch(`/studies/${studiesId}/exams/${formData.id}`, examData).then(res => {
+                toastr.success("Sukces");
+                setState(state+1);
+                handleCloseModal();
+    
+            }).catch(error => {
+                toastr.error(error.response.data.message);
+            })
+          } else {
+            await axios.post(`/studies/${studiesId}/exams`, examData).then(res => {
+                toastr.success("Sukces");
+                setState(state+1);
+                handleCloseModal();
+    
+            }).catch(error => {
+                toastr.error(error.response.data.message);
+            })
+          }
+          
+    };
+
+    const triggerEdit = (item) => {
+
+        const examData = {
+            id: item.id,
+            name: item.name,
+            questionMetadataId: item.questionMetadata.id,
+            startAt: item.startAt,
+            endAt: item.endAt,
+            questionPerUser: item.questionPerUser,
+          };
+
+          setFormData(examData);
+          setShowModal(true);
+    }
+
+    const clearForm = () => {
+        setFormData({
+            name: '',
+            questionMetadataId: '',
+            startAt: '',
+            endAt: '',
+            questionPerUser: 0,
+        });
+    }
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+
+        clearForm();
+    }
+
+    const triggerDelete = (item) => {
+        setFormData(item);
+        setShowDeleteModal(true);
+    }
+
+    const handleCloseDeleteModal = () => {
+        clearForm();
+
+        setShowDeleteModal(false);
+    }
+
+    const handleDelete = async () => {
+        await axios.delete(`/studies/${studiesId}/exams/${formData.id}`).then(res => {
             toastr.success("Sukces");
             setState(state+1);
-            setShowModal(false);
+            handleCloseDeleteModal();
 
         }).catch(error => {
             toastr.error(error.response.data.message);
         })
+    }
+
+    const handleBack = async (item) => {
+
+        const body = {
+            name: item.name,
+            questionMetadata: {
+                id: item.questionMetadata.id
+            },
+            archived: false,
+            startAt: item.startAt,
+            endAt: item.endAt,
+            questionPerUser: item.questionPerUser
+          };
+
+          console.log(body);
+
+
+        await axios.patch(`/studies/${studiesId}/exams/${item.id}`, body).then(res => {
+            toastr.success("Sukces");
+            setState(state+1);
+            setArchived(false);
+            clearForm();
+        }).catch(error => {
+            console.log(error);
+            toastr.error(error.response.data.message);
+            clearForm();
+        })
+    }
+
+    const isDateInRange = (startAt, endAt) => {
+        const currentDate = new Date();
+        const startDate = new Date(startAt);
+        const endDate = new Date(endAt);
+
+        return currentDate >= startDate && currentDate <= endDate;
     };
 
     return (
         <div className='center-main centered-element'>
             <div className='centered-element'>
                 <Button hidden={!owner} onClick={() => { setShowModal(true); }} >Dodaj</Button>
+                <Button hidden={!owner} onClick={() => { setArchived(!archived); }}>Zarchiwizowany</Button>
                 <Table striped>
                     <thead>
                         <tr>
@@ -123,7 +235,7 @@ const StudiesExams = ({ authState }) => {
                             <th>Nazwa</th>
                             <th>Rozpoczęcie</th>
                             <th>Zakończenie</th>
-                            {owner && <th>Opcje</th>}
+                            <th>Opcje</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -134,7 +246,17 @@ const StudiesExams = ({ authState }) => {
                                     <td>{item.name}</td>
                                     <td>{formatDate(item.startAt)}</td>
                                     <td>{formatDate(item.endAt)}</td>
-                                    {owner && <td>Opcje</td>}
+                                    {owner && <td>
+                                        <FaEye onClick={() => { navigate(`/studies/${studiesId}/exams/${item.id}`)}} /> {/* TODO */}
+                                        {!archived && <FaEdit onClick={() => { triggerEdit(item) }}></FaEdit>}
+                                        {archived && <FaBackward onClick={() => { handleBack(item) }}/>}
+                                        <IoTrashBin onClick={() => { triggerDelete(item); }} />
+
+                                        </td>}
+                                    {!owner && <td>
+                                        <Button disabled={!isDateInRange(item.startAt, item.endAt)} onClick={() => {navigate(`/studies/${studiesId}/exams/${item.id}/participate`);}} >Start</Button>
+                                        <Button disabled={!item.showResults}>Wyniki</Button>
+                                        </td>}
                                 </tr>
                             ))
                         }
@@ -142,7 +264,7 @@ const StudiesExams = ({ authState }) => {
                 </Table>
             </div>
 
-            <Modal show={showModal} onHide={() => { setShowModal(false); }}>
+            <Modal show={showModal} onHide={() => { handleCloseModal(); }}>
                 <Form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
                     <Modal.Header>
                         Egzamin
@@ -213,10 +335,22 @@ const StudiesExams = ({ authState }) => {
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={() => { setShowModal(false); }}>Zamknij</Button>
-                        <Button variant="primary" type="submit">Dodaj</Button>
+                        <Button onClick={() => { handleCloseModal(); }}>Zamknij</Button>
+                        <Button variant="primary" type="submit">{formData.id ? "Edytuj" : "Dodaj"}</Button>
                     </Modal.Footer>
                 </Form>
+            </Modal>
+
+            <Modal show={showDeleteModal} onHide={() => { handleCloseDeleteModal(); }} >
+                <Modal.Header>
+                    Egzamin
+                </Modal.Header>
+                <Modal.Body>
+                    Czy chcesz usunąć dany element?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={() => { handleDelete(); }}>Usuń</Button>
+                </Modal.Footer>
             </Modal>
         </div>
     );

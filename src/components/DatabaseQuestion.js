@@ -57,7 +57,11 @@ const DatabaseQuestion = ({ authState }) => {
 
     useEffect(() => {
         const getQuestions = async () => {
-            await axios.get("/questions/metadata/" + databaseId + "/questions")
+            await axios.get("/questions/metadata/" + databaseId + "/questions", {
+                params: {
+                    page: pageDetails.page - 1,
+                }
+            })
                 .then(res => {
                     setQuestions(res.data.data);
                     setPageDetails({
@@ -69,7 +73,7 @@ const DatabaseQuestion = ({ authState }) => {
 
         getQuestions();
         getQuestionsType();
-    }, [state]);
+    }, [state, pageDetails.page]);
 
     const handleChange = (e) => {
         setFormData({

@@ -27,6 +27,8 @@ import GoogleCallback from './components/GoogleCallback';
 import DatabaseQuestion from './components/DatabaseQuestion';
 import DatabaseQuestionAnswer from './components/DatabaseQuestionAnswer';
 import StudiesExams from './components/StudiesExams';
+import ExamParticipate from './components/ExamParticipate';
+import ExamResults from './components/ExamResults';
 
 
 const App = () => {
@@ -55,6 +57,8 @@ const App = () => {
                     <Route path="/callback" element={<GoogleCallback authState={authState} />} />
                     <Route path="/studies/:studiesId" element={<StudiesDetailsUser authState={authState} />} />
                     <Route path="/studies/:studiesId/exams" element={<StudiesExams authState={authState} />} />
+                    <Route path="/studies/:studiesId/exams/:examId/participate" element={<ExamParticipate authState={authState} />} />
+                    <Route path="/studies/:studiesId/exams/:examId" element={<ExamResults authState={authState} />} />
                     <Route path="/login" element={<Login authState={authState} />} />
                     <Route path="/login/recovery" element={<Recovery authState={authState} />} />
                     <Route path="/login/recovery/:recoveryToken" element={<RecoveryToken authState={authState} />} />
