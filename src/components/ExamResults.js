@@ -7,7 +7,7 @@ import Pagination from "./general/Pagination";
 import debounce from "lodash.debounce";
 import { FaCheck } from "react-icons/fa";
 import { HiXMark } from "react-icons/hi2";
-import { Modal, Table } from "react-bootstrap";
+import { Button, Modal, Table } from "react-bootstrap";
 import { MdQuestionAnswer } from "react-icons/md";
 
 
@@ -18,14 +18,21 @@ const ExamResults = ({ authState }) => {
     const navigate = useNavigate();
     const { studiesId, examId } = useParams();
     const [results, setResults] = useState([]);
+    const [examDetails, setExamDetails] = useState({});
     const [pageDetails, setPageDetails] = useState({
         page: 1,
         pages: 0
-      });
+    });
     const [showAnswerModal, setShowAnswerModal] = useState(false);
     const [item, setItem] = useState(0);
-
+    const [expandedItem, setExpandedItem] = useState(null);
     const [answers, setAnswers] = useState([]);
+    const [answerCorrectOptions, setAnswerCorrectOptions] = useState([]);
+    const [points, setPoints] = useState([]);
+    const [changeItem, setChangeItem] = useState({});
+    const [itemChanged, setItemChanged] = useState(0);
+    const [sent, setSent] = useState(false);
+
 
     const handlePageChange = debounce((newPage) => {
         setPageDetails({
@@ -34,48 +41,116 @@ const ExamResults = ({ authState }) => {
         });
     }, 100);
 
+    const getExamGroups = async () => {
+        await axios.get(`/studies/${studiesId}/exams/${examId}/groups`, {
+            params: {
+                page: pageDetails.page - 1
+            }
+        }).then(res => {
+            setResults(res.data.data);
+            setPageDetails({
+                page: res.data.page + 1,
+                pages: res.data.pages
+            });
+
+            if(item !== 0) {
+                const itemPoints = res.data.data.filter(filterItem => filterItem.id === item)[0];
+                setPoints(itemPoints.points);
+            }
+
+        }).catch(error => {
+            toastr.error(error.response.data.message);
+            navigate(`/studies/${studiesId}/exams`);
+        })
+    };
+
     useEffect(() => {
-        const getExamGroups = async () => {
-            await axios.get(`/studies/${studiesId}/exams/${examId}/groups`, {
-                params: {
-                    page: pageDetails.page - 1
-                }
-            }).then(res => {
-                setResults(res.data.data);
-                setPageDetails({
-                    page: res.data.page + 1,
-                    pages: res.data.pages
-                });            
-                console.log(res);
+        const getExamDetails = async () => {
+            await axios.get(`/studies/${studiesId}/exams/${examId}`).then(res => {
+                setExamDetails(res.data.data);
             }).catch(error => {
                 toastr.error(error.response.data.message);
                 navigate(`/studies/${studiesId}/exams`);
-            })
-        }
+            });
+        };
+
+        const getAnswerTypes = async () => {
+            await axios.get(`/public/questions/answers/types`).then(res => {
+                setAnswerCorrectOptions(res.data.data);
+            });
+        };
 
         getExamGroups();
-    }, [pageDetails.page])
+        getExamDetails();
+        getAnswerTypes();
+    }, [pageDetails.page, itemChanged])
 
     useEffect(() => {
         const getAnswers = async () => {
             await axios.get(`/studies/${studiesId}/exams/${examId}/groups/${item}`).then(res => {
                 setAnswers(res.data.data.examGroupQuestionList);
-                console.log(res.data.data.examGroupQuestionList);
             }).catch(error => {
                 toastr.error(error.response.data.message);
                 setShowAnswerModal(false);
             })
         }
 
-        if(item !== 0) {
+        if (item !== 0) {
             getAnswers();
         }
-    }, [showAnswerModal])
+    }, [showAnswerModal, itemChanged]);
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            console.log("hit");
+            getExamGroups();
+        }, 15000);
+
+        return () => clearInterval(intervalId);
+    }, [])
+
+
+    const toggleExpandItem = (itemId) => {
+        setChangeItem({});
+        setExpandedItem((prevExpandedItem) =>
+            prevExpandedItem === itemId ? null : itemId
+        );
+    };
+
+    const handleCorrectChange = (itemId, newValue) => {
+        setChangeItem({
+            correct: newValue,
+            id: itemId
+        })
+    };
+
+    const saveChanges = async () => {
+        if (item !== 0 && changeItem.id) {
+            const body = {
+                correctType: changeItem.correct
+            }
+
+            await axios.patch(`/studies/${studiesId}/exams/${examId}/groups/${item}/questions/${changeItem.id}`, body).then(res => {
+                toastr.success("Item updated");
+                setItemChanged(itemChanged + 1)
+            }).catch(error => {
+                toastr.error(error.response.data.message);
+            })
+        }
+    };
+
+    const handleCloseModal = () => {
+        setShowAnswerModal(false);
+        setPoints(0);
+        setItem(0);
+        setChangeItem({});
+        setExpandedItem(null);
+    }
 
     return (
         <div className='center-main centered-element'>
             <div className='centered-element'>
-            <Table striped>
+                <Table striped>
                     <thead>
                         <tr>
                             <th>#</th>
@@ -83,6 +158,7 @@ const ExamResults = ({ authState }) => {
                             <th>Nazwisko</th>
                             <th>Adres IP</th>
                             <th>Punktacja</th>
+                            <th>Rozpoczęte</th>
                             <th>Wysłane</th>
                             <th>Opcje</th>
                         </tr>
@@ -96,10 +172,11 @@ const ExamResults = ({ authState }) => {
                                     <td>{item.studiesUser.user.firstname}</td>
                                     <td>{item.studiesUser.user.lastname}</td>
                                     <td>{item.studiesUser.user.ipAddress}</td>
-                                    <td>{item.points ? item.points : 0}</td>
+                                    <td>{item.points ? item.points : 0}{"/" + (examDetails.questionPerUser * 2)}</td>
+                                    <td>{item.started ? <FaCheck /> : <HiXMark />}</td>
                                     <td>{item.sent ? <FaCheck /> : <HiXMark />}</td>
                                     <td>
-                                       <MdQuestionAnswer onClick={() => {setShowAnswerModal(true); setItem(item.id); }} />
+                                        <MdQuestionAnswer onClick={() => { setShowAnswerModal(true); setItem(item.id); setPoints(item.points ? item.points : 0); setSent(item.sent); }} />
                                     </td>
                                 </tr>
                             ))
@@ -107,29 +184,69 @@ const ExamResults = ({ authState }) => {
                         }
                     </tbody>
                 </Table>
-            <Pagination total={pageDetails.pages} currentPage={pageDetails.page} onPageChange={handlePageChange} />
+                <Pagination total={pageDetails.pages} currentPage={pageDetails.page} onPageChange={handlePageChange} />
             </div>
 
-            <Modal show={showAnswerModal} onHide={() => {setShowAnswerModal(false)}}>
+            <Modal show={showAnswerModal} onHide={() => { handleCloseModal() }}>
                 <Modal.Header>
-
+                    Odpowiedzi
                 </Modal.Header>
                 <Modal.Body>
-                <Table striped>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {answers.map((item, index) => (
-                            <tr key={index}>
-                                <td>{item.id}</td>
+                    <div>
+                        <label>
+                            Punktacja: {points}{"/" + (examDetails.questionPerUser * 2)}
+                        </label>
+                    </div>
+                    <Table striped>
+                        <thead>
+                            <tr>
+                                <th>Pytanie</th>
+                                {expandedItem && <th>Detale</th>}
                             </tr>
-                        ))}
+                        </thead>
+                        <tbody>
+                            {answers.map((item, index) => (
+                                <tr key={index}>
+                                    <td onClick={() => toggleExpandItem(item.id)}>{item.question.question}</td>
+                                    {
+                                        expandedItem === item.id &&
+                                        <td>
+                                            <label>
+                                                Correct:
+                                                <select
+                                                    disabled={!sent}
+                                                    value={changeItem.correct ? changeItem.correct : (item.correct ? item.correct : "NOT_CORRECT")}
+                                                    onChange={(e) => {if(sent) handleCorrectChange(item.id, e.target.value)}}
+                                                >
+                                                    {answerCorrectOptions.map((option) => (
+                                                        <option key={option} value={option}>
+                                                            {option}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </label>
+                                            <label>
+                                                Possible Answers: {item.question.answers.map(answer => answer.answer).join(", ")}
+                                            </label>
+                                            <label>
+                                                Correct Answers:  {item.question.answers.filter(answer => answer.correct)
+                                                    .map(correctAnswer => correctAnswer.answer)
+                                                    .join(", ")}
+                                            </label>
+                                            <label>
+                                                User Answered: {item.answer.map(answer => answer.questionAnswer.answer).join(", ")}
+                                            </label>
+                                            <label>
+                                                Odpowiedz zmieniona: {item.changedManually ? <FaCheck/> : <HiXMark/>}
+                                            </label>
+                                            {changeItem.id && <Button onClick={() => { saveChanges() }}>Zapisz</Button>}
+                                        </td>
+                                    }
+                                </tr>
+                            ))}
 
-                    </tbody>
-                </Table>
+                        </tbody>
+                    </Table>
                 </Modal.Body>
                 <Modal.Footer>
 
