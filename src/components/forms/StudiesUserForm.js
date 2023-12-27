@@ -70,10 +70,8 @@ const StudiesUserForm = ({ showModal, closeModal, addedUsers, studiesId }) => {
         const userInAddedIndex = addedUsers.findIndex((item) => item.user.id === user.id);
 
         if (userToAddIndex === -1 && userInAddedIndex === -1) {
-            // User is not added and not already in addedUsers, add the user
             setUsersToAdd([...usersToAdd, user]);
         } else {
-            // User is added, remove the user
             const updatedUsers = [...usersToAdd];
             updatedUsers.splice(userToAddIndex, 1);
             setUsersToAdd(updatedUsers);

@@ -29,6 +29,7 @@ import DatabaseQuestionAnswer from './components/DatabaseQuestionAnswer';
 import StudiesExams from './components/StudiesExams';
 import ExamParticipate from './components/ExamParticipate';
 import ExamResults from './components/ExamResults';
+import Users from './components/Users';
 
 
 const App = () => {
@@ -54,6 +55,7 @@ const App = () => {
                     <Route path="/admin/database/:databaseId/questions/:questionId" element={<DatabaseQuestionAnswer authState={authState} />} />
                     <Route path="/admin/google/connect" element={<GoogleConnect authState={authState} />} />
                     <Route path="/admin/google/disonnect" element={<GoogleDisconnect authState={authState} />} />
+                    <Route path="/admin/users" element={<Users authState={authState} />} />
                     <Route path="/callback" element={<GoogleCallback authState={authState} />} />
                     <Route path="/studies/:studiesId" element={<StudiesDetailsUser authState={authState} />} />
                     <Route path="/studies/:studiesId/exams" element={<StudiesExams authState={authState} />} />

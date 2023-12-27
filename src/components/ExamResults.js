@@ -32,6 +32,7 @@ const ExamResults = ({ authState }) => {
     const [changeItem, setChangeItem] = useState({});
     const [itemChanged, setItemChanged] = useState(0);
     const [sent, setSent] = useState(false);
+    const [sendResults, setSendResults] = useState(false);
 
 
     const handlePageChange = debounce((newPage) => {
@@ -147,9 +148,19 @@ const ExamResults = ({ authState }) => {
         setExpandedItem(null);
     }
 
+    const handleSendResults = async () => {
+        await axios.post(`/studies/${studiesId}/exams/${examId}/submission`).then(res => {
+            toastr.success("Wyniki zostały zwrócone");
+            setSendResults(false);
+        }).catch(error => {
+            toastr.error(error.response.data.message);
+        })
+    }
+
     return (
         <div className='center-main centered-element'>
             <div className='centered-element'>
+                <Button onClick={() => {setSendResults(true)}}>Oddaj</Button>
                 <Table striped>
                     <thead>
                         <tr>
@@ -250,6 +261,19 @@ const ExamResults = ({ authState }) => {
                 </Modal.Body>
                 <Modal.Footer>
 
+                </Modal.Footer>
+            </Modal>
+
+            <Modal show={sendResults} onHide={() => {setSendResults(false)}}>
+                <Modal.Header>
+                    Wyniki
+                </Modal.Header>
+                <Modal.Body>
+                    Czy chcesz oddać wyniki?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={() => {setSendResults(false);}}>Zamknij</Button> 
+                    <Button onClick={() => {handleSendResults()}}>Wyślij</Button>
                 </Modal.Footer>
             </Modal>
         </div>

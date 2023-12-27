@@ -29,6 +29,9 @@ const StudiesExams = ({ authState }) => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [archived, setArchived] = useState(false);
     const [state, setState] = useState(1);
+    const [points, setPoints] = useState(0);
+    const [maxPoints, setMaxPoints] = useState(0);
+    const [showResults, setShowResults] = useState(false);
 
     useEffect(() => {
         const getExams = async () => {
@@ -223,6 +226,16 @@ const StudiesExams = ({ authState }) => {
         return currentDate >= startDate && currentDate <= endDate;
     };
 
+    const handleShowResult = async (examId) => {
+        await axios.get(`/studies/${studiesId}/exams/${examId}`).then(res => {
+            setPoints(res.data.data.points);
+            setMaxPoints(res.data.data.questionPerUser * 2);
+            setShowResults(true);
+        }).catch(error => {
+            toastr.error(error.response.data.message);
+        })
+    }
+
     return (
         <div className='center-main centered-element'>
             <div className='centered-element'>
@@ -255,7 +268,7 @@ const StudiesExams = ({ authState }) => {
                                         </td>}
                                     {!owner && <td>
                                         <Button disabled={!isDateInRange(item.startAt, item.endAt)} onClick={() => {navigate(`/studies/${studiesId}/exams/${item.id}/participate`);}} >Start</Button>
-                                        <Button disabled={!item.showResults}>Wyniki</Button>
+                                        <Button disabled={!item.showResults} onClick={() => {handleShowResult(item.id)}}>Wyniki</Button>
                                         </td>}
                                 </tr>
                             ))
@@ -350,6 +363,18 @@ const StudiesExams = ({ authState }) => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={() => { handleDelete(); }}>Usuń</Button>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal show={showResults} onHide={() => {setShowResults(false)}}>
+                <Modal.Header>
+                    Wynik
+                </Modal.Header>
+                <Modal.Body>
+                    Twój wynik to: {points}/{maxPoints}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={() => {setShowResults(false)}}>Zamknij</Button>
                 </Modal.Footer>
             </Modal>
         </div>
