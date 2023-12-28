@@ -17,16 +17,10 @@ const GoogleConnect = ({ authState }) => {
             }
         }).then(res => {
             const locationHeader = res.headers.get('Google-Url');
-            console.log(res.headers);
-            console.log("In respones correct");
-            console.log(locationHeader);
             if (locationHeader) {
-                // Redirect to the new location
                 window.location.href = locationHeader;
             }
         }).catch(error => {
-            console.log("In error log");
-            console.log(error);
             navigate("/");
         })
     }, [])

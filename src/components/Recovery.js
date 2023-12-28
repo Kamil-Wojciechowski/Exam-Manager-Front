@@ -4,9 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import toastr from 'toastr';
 import axios from '../js/AxiosInstance';
 import AuthNavigate from '../js/AuthNavigate';
+import { useTranslation } from 'react-i18next';
 
 const Recovery = ({ authState }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     AuthNavigate(authState.isAuthenticated, false);
 
@@ -30,10 +32,10 @@ const Recovery = ({ authState }) => {
         const newErrors = {};
 
         if (!formData.email.trim()) {
-            newErrors.email = 'Email is required';
+            newErrors.email = t('email_required');
             isValid = false;
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
-            newErrors.email = 'Niepoprawna wartość.';
+            newErrors.email = t('incorrect_value');
             isValid = false;
         }
 
@@ -48,19 +50,17 @@ const Recovery = ({ authState }) => {
                 await axios.post("/auth/recovery/" + formData.email);
             } catch (error) { }
 
-            toastr.success("Email został wysłany, na podany adres email.")
+            toastr.success(t('email_send'))
             navigate("/login");
         }
 
     };
 
-
-    // Render the login form if not authenticated
     return (
         <div id="recovery">
             <div className="centered-element">
                 <div id="recovery-border">
-                    <h2>Przypomnij hasło</h2>
+                    <h2>{t('recovery')}</h2>
                     <Form onSubmit={(e) => { e.preventDefault(); handleRecovery(); }}>
                         <Form.Group>
                             <Form.Label>
@@ -70,7 +70,7 @@ const Recovery = ({ authState }) => {
                             <div style={{ color: 'red' }}>{errors.email}</div>
                         </Form.Group>
                         <div>
-                            <Button className="main_button" variant='primary' type="submit">Wyślij email</Button>
+                            <Button className="main_button" variant='primary' type="submit">{t('send')}</Button>
                         </div>
                     </Form>
                 </div>

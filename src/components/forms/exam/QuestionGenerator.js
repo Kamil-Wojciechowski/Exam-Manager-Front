@@ -2,11 +2,11 @@ import SingleAnswer from "./SingleAnswer";
 import MultipleAnswer from "./MultipleAnswer";
 import FileAnswer from "./FileAnswer";
 import OpenAnswer from "./OpenAnswer";
+import { PacmanLoader } from "react-spinners";
 
 const QuestionGenerator = ({ question, answers, setAnswers }) => {
     if (!question || !question.question || !question.question.questionType) {
-        // Data is not available yet, return a loading message or placeholder
-        return <p>Loading...</p>;
+        return <div className='center-main'><PacmanLoader className='centered-element' color="#36d7b7" /></div>;
       }
 
     switch (question.question.questionType) {

@@ -33,9 +33,9 @@ const Navigation = ({ authState }) => {
                 }
                 {(authState.isTeacher) &&
                   (authState.user.googleConnected ? (
-                    <li><Link to="/admin/google/disonnect">Disconnect google account</Link></li>
+                    <li><Link to="/admin/google/disonnect">{t('disconnect_google')}</Link></li>
                   ) : (
-                    <li><Link to="/admin/google/connect">Connect google account</Link></li>
+                    <li><Link to="/admin/google/connect">{t('connect_google')}</Link></li>
                   ))}
               </ul>
 

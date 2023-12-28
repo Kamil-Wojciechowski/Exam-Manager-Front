@@ -4,9 +4,12 @@ import axios from '../../js/AxiosInstance';
 import Pagination from '../general/Pagination';
 import debounce from 'lodash.debounce';
 import toastr from 'toastr';
+import { useTranslation } from 'react-i18next';
 
 
 const StudiesUserForm = ({ showModal, closeModal, addedUsers, studiesId }) => {
+    const { t } = useTranslation();
+
     const [pageDetails, setPageDetails] = useState({
         page: 1,
         pages: 0
@@ -80,7 +83,7 @@ const StudiesUserForm = ({ showModal, closeModal, addedUsers, studiesId }) => {
 
     const addUsersToStudies = async () => {
         if(usersToAdd.length === 0) {
-            toastr.warning("No users added")
+            toastr.warning(t('no_users_added'))
         } else {
             await usersToAdd.forEach(item => {
                 axios.post("/studies/" + studiesId + "/users", {
@@ -90,7 +93,7 @@ const StudiesUserForm = ({ showModal, closeModal, addedUsers, studiesId }) => {
                 })
             });
     
-            toastr.success("Items processed");
+            toastr.success(t('success'));
             window.location.reload();
         }
     }
@@ -98,15 +101,15 @@ const StudiesUserForm = ({ showModal, closeModal, addedUsers, studiesId }) => {
     return (
         <Modal show={showModal} onHide={closeModal}>
             <Modal.Header>
-                Dodaj użytkownika
+                {t('add_user')}
             </Modal.Header>
             <Modal.Body>
                 <Table striped>
                     <thead>
                         <tr>
-                            <th>Choose</th>
-                            <th>Firstname</th>
-                            <th>Lastname</th>
+                            <th>{t('choose')}</th>
+                            <th>{t('firstname')}</th>
+                            <th>{t('lastname')}</th>
                             <th>Email</th>
                         </tr>
                     </thead>
@@ -142,10 +145,10 @@ const StudiesUserForm = ({ showModal, closeModal, addedUsers, studiesId }) => {
                                         }
                                     >
                                         {addedUsers.some((addedUser) => addedUser.user.id === item.id)
-                                            ? "Already Added"
+                                            ? t('already_added')
                                             : usersToAdd.some((addedUser) => addedUser.id === item.id)
-                                                ? "Remove"
-                                                : "Add"}
+                                                ? t('remove')
+                                                : t('add')}
                                     </Button>
 
                                 </td>
@@ -166,7 +169,7 @@ const StudiesUserForm = ({ showModal, closeModal, addedUsers, studiesId }) => {
 
             </Modal.Body>
             <Modal.Footer>
-                <Button className="main_button" variant='primary' onClick={() => {addUsersToStudies()}}>Dodaj</Button>
+                <Button className="main_button" variant='primary' onClick={() => {addUsersToStudies()}}>{t('add')}</Button>
             </Modal.Footer>
         </Modal>
     );

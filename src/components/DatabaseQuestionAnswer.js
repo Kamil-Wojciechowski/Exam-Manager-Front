@@ -7,13 +7,15 @@ import { FaCheck, FaEdit } from "react-icons/fa";
 import { HiXMark } from "react-icons/hi2";
 import { IoTrashBin } from "react-icons/io5";
 import toastr from 'toastr';
+import { useTranslation } from "react-i18next";
 
 
 
 const DatabaseQuestionAnswer = ({ authState }) => {
     useAuthNavigate(authState.isAuthenticated, true, authState.isTeacher, true);
+    
+    const { t } = useTranslation();
     const { databaseId, questionId } = useParams();
-
     const [answers, setAnswers] = useState([]);
     const [state, setState] = useState(1);
     const [formData, setFormData] = useState({
@@ -58,7 +60,7 @@ const DatabaseQuestionAnswer = ({ authState }) => {
                 setShowModal(false);
                 clearForm();
                 setState(state + 1);
-                toastr.success("Utworzono");
+                toastr.success(t('success'));
             }).catch(error => {
                 toastr.error(error.response.data.message);
             });
@@ -67,7 +69,7 @@ const DatabaseQuestionAnswer = ({ authState }) => {
                 setShowModal(false);
                 clearForm();
                 setState(state + 1);
-                toastr.success("Zaaktualizowano");
+                toastr.success(t('success'));
             }).catch(error => {
                 toastr.error(error.response.data.message);
             });
@@ -88,7 +90,7 @@ const DatabaseQuestionAnswer = ({ authState }) => {
         await axios.delete("/questions/metadata/" + databaseId + "/questions/" + questionId + "/answers/" + formData.id).then(res => {
             handleCloseDeleteModal();
             setState(state + 1);
-            toastr.success("Usunięto");
+            toastr.success(t('success'));
         }).catch(error => {
             toastr.error(error.response.data.message);
         });
@@ -102,14 +104,14 @@ const DatabaseQuestionAnswer = ({ authState }) => {
     return (
         <div className='center-main centered-element'>
             <div className='centered-element'>
-                <Button onClick={() => { setShowModal(true); }}> Add</Button>
+                <Button onClick={() => { setShowModal(true); }}>{t('add')}</Button>
                 <Table striped>
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Odpowiedż</th>
-                            <th>Poprawna</th>
-                            <th>Opcje</th>
+                            <th>{t('answer')}</th>
+                            <th>{t('correct')}</th>
+                            <th>{t('options')}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -132,11 +134,11 @@ const DatabaseQuestionAnswer = ({ authState }) => {
             <Modal show={showModal} onHide={() => { setShowModal(false); }}>
                 <Form onSubmit={(e) => { e.preventDefault(); handleForm(); }} >
                     <Modal.Header>
-                        Odpowiedź
+                        {t('answer')}
                     </Modal.Header>
                     <Modal.Body>
                         <Form.Group controlId="formAnswer">
-                            <Form.Label>Answer:</Form.Label>
+                            <Form.Label>{t('answer')}:</Form.Label>
                             <Form.Control
                                 type="text"
                                 name="answer"
@@ -149,28 +151,29 @@ const DatabaseQuestionAnswer = ({ authState }) => {
                             <Form.Check
                                 type="checkbox"
                                 name="correct"
-                                label="Correct"
+                                label={t('correct')}
                                 checked={formData.correct}
                                 onChange={handleChange}
                             />
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={() => { setShowModal(false); }}>Zamknij</Button>
-                        <Button type="submit">{formData.id ? "Edytuj" : "Utwórz"}</Button>
+                        <Button onClick={() => { setShowModal(false); }}>{t('close')}</Button>
+                        <Button type="submit">{formData.id ? t('edit') : t('add')}</Button>
                     </Modal.Footer>
                 </Form>
             </Modal>
 
             <Modal show={showDeleteModal} onHide={() => { handleCloseDeleteModal(); }} >
                 <Modal.Header>
-                    Pytanie
+                    {t('question')}
                 </Modal.Header>
                 <Modal.Body>
-                    Czy chcesz usunąć dany element?
+                    {t('do_you_want_delete_this')}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => { handleDelete(); }}>Usuń</Button>
+                    <Button onClick={() => {handleCloseDeleteModal(); }}>{t('close')}</Button>
+                    <Button onClick={() => { handleDelete(); }}>{t('remove')}</Button>
                 </Modal.Footer>
             </Modal>
         </div>

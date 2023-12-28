@@ -8,11 +8,13 @@ import StudiesForm from './forms/StudiesForm';
 import { FaCrown } from "react-icons/fa";
 import { TiUserDelete } from "react-icons/ti";
 import StudiesUserForm from './forms/StudiesUserForm';
+import { useTranslation } from 'react-i18next';
 
 
 
 const StudiesDetailsUser = ({ authState }) => {
     const { studiesId } = useParams();
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [refreshKey, setRefreshKey] = useState(0);
 
@@ -69,7 +71,7 @@ const StudiesDetailsUser = ({ authState }) => {
 
     const handleDelete = async () => {
         await axios.delete("/studies/" + studiesId).then(res => {
-            toastr.success("Item deleted");
+            toastr.success(t('success'));
             navigate("/");
         }).catch(error => {
             toastr.error(error.response.data.message);
@@ -78,7 +80,7 @@ const StudiesDetailsUser = ({ authState }) => {
 
     const handleUserDelete = async () => {
         await axios.delete("/studies/" + studiesId + "/users/" + studiesUser.id).then(res => {
-            toastr.success("Item deleted");
+            toastr.success(t('success'));
             setUserDeleteModal(false);
             setRefreshState();
         }).catch(error => {
@@ -108,7 +110,7 @@ const StudiesDetailsUser = ({ authState }) => {
 
         if (selectedOption === 'google') {
             await axios.post("/studies/" + studiesId + "/users/imports/google").then(res => {
-                toastr.success("Sucess!");
+                toastr.success(t('success'));
                 setUserImportModal(false);
                 setRefreshState();
             }).catch(error => {
@@ -116,7 +118,7 @@ const StudiesDetailsUser = ({ authState }) => {
             });
         } else if (selectedOption === 'csv') {
             if (!file) {
-                toastr.error('Please provide a file');
+                toastr.error(t('provide_file'));
                 return;
             }
 
@@ -128,7 +130,7 @@ const StudiesDetailsUser = ({ authState }) => {
                   'Content-Type': 'multipart/form-data',
                 },
               }).then(res => {
-                toastr.success("Success!");
+                toastr.success(t('success'));
                 setUserImportModal(false);
                 setRefreshState();
             }).catch(error => {
@@ -149,15 +151,15 @@ const StudiesDetailsUser = ({ authState }) => {
         <div className='center-main centered-element'>
             <div className='centered-element'>
                 
-                <Button type="button" hidden={showUsers} onClick={() => { setShowDetails(false); setShowUsers(true) }}>Show details</Button>
-                <Button type="button" hidden={showDetails} onClick={() => { setShowDetails(true); setShowUsers(false) }}>Show Users</Button>
-                <Button onClick={() => {navigate("/studies/" + studiesId + "/exams")}}>Egzaminy</Button>
+                <Button type="button" hidden={showUsers} onClick={() => { setShowDetails(false); setShowUsers(true) }}>{t('details')}</Button>
+                <Button type="button" hidden={showDetails} onClick={() => { setShowDetails(true); setShowUsers(false) }}>{t('users')}</Button>
+                <Button onClick={() => {navigate("/studies/" + studiesId + "/exams")}}>{t('exams')}</Button>
 
                 <div hidden={showDetails}>
-                    {formData.owner && <Button type='button' onClick={() => { openModal() }}>Edit</Button>}
-                    {formData.owner && <Button type='button' onClick={() => { openDeleteModal() }}>Delete</Button>}
+                    {formData.owner && <Button type='button' onClick={() => { openModal() }}>{t('edit')}</Button>}
+                    {formData.owner && <Button type='button' onClick={() => { openDeleteModal() }}>{t('remove')}</Button>}
 
-                    <p>Nazwa:</p>
+                    <p>{t('name')}:</p>
                     <p>{formData.name}</p>
                     <StudiesForm authState={authState} studiesData={formData} studiesId={studiesId} isCreate={false} showModal={showModal} closeModal={closeModal}></StudiesForm>
                     {
@@ -174,33 +176,34 @@ const StudiesDetailsUser = ({ authState }) => {
 
                 <Modal show={showDeleteModal} onHide={() => setDeleteModal(false)}>
                     <Modal.Header>
-                        Grupa
+                        {t('group')}
                     </Modal.Header>
                     <Modal.Body>
-                        Czy chcesz usunąć grupę {formData.name}?
+                        {t('do_you_want_delete')} {formData.name}?
                     </Modal.Body>
                     <Modal.Footer>
                         <Button className="main_button" variant='primary' onClick={handleDelete}>
-                            Usuń
+                            {t('remove')}
                         </Button>
                     </Modal.Footer>
                 </Modal>
 
 
                 <div hidden={showUsers}>
-                    {formData.owner && <Button type="button" onClick={() => { setShowUserModal(true); }}>Add User</Button>}
-                    {formData.owner && <Button type="button" onClick={() => { setUserImportModal(true); }}>Import Users</Button>}
+                    {formData.owner && <Button type="button" onClick={() => { setShowUserModal(true); }}>{t('add')}</Button>}
+                    {formData.owner && <Button type="button" onClick={() => { setUserImportModal(true); }}>Import</Button>}
                     {(users.length === 0) ?
                         <div>
-                            No users, please add some
+                            {t('no_users')}
                         </div> :
                         <Table striped>
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Firstname</th>
-                                    <th>Lastname</th>
-                                    {formData.owner && <th>Options</th>}
+                                    <th>{t('firstname')}</th>
+                                    <th>{t('lastname')}</th>
+                                    <th>Email</th>
+                                    {formData.owner && <th>{t('options')}</th>}
                                 </tr>
                             </thead>
                             <tbody>
@@ -209,6 +212,7 @@ const StudiesDetailsUser = ({ authState }) => {
                                         <td>{item.id}</td>
                                         <td>{item.owner && <FaCrown size={25} />} {item.user.firstname}</td>
                                         <td>{item.user.lastname}</td>
+                                        <td>{item.user.email}</td>
                                         {(formData.owner && item.user.id !== authState.user.id) && <td>
                                             <TiUserDelete onClick={() => {
                                                 setStudiesUser(item);
@@ -224,14 +228,14 @@ const StudiesDetailsUser = ({ authState }) => {
 
                     <Modal show={showUserDeleteModal} onHide={() => setUserDeleteModal(false)}>
                         <Modal.Header>
-                            Użytkownik grupy {formData.name}
+                            {t('user')} {formData.name}
                         </Modal.Header>
                         <Modal.Body>
-                            Czy chcesz usunąć użytkownika {studiesUser.user.firstname} z grupy?
+                            {t('do_you_want_delete')} {studiesUser.user.firstname}
                         </Modal.Body>
                         <Modal.Footer>
                             <Button className="main_button" variant='primary' onClick={() => { handleUserDelete() }}>
-                                Usuń
+                                {t('remove')}
                             </Button>
                         </Modal.Footer>
                     </Modal>
@@ -240,12 +244,12 @@ const StudiesDetailsUser = ({ authState }) => {
 
                         <Form onSubmit={(e) => { e.preventDefault(); handleFormSubmit(); }}>
                             <Modal.Header>
-                                Zaimportuj użytkowników.
+                                Import
                             </Modal.Header>
                             <Modal.Body>
 
                                 <Form.Group controlId="formOption">
-                                    <Form.Label>Wybierz opcję:</Form.Label>
+                                    <Form.Label>{t('select')}</Form.Label>
                                     <Form.Control as="select" value={selectedOption} onChange={handleOptionChange}>
                                         <option value="csv">CSV</option>
                                         {authState.user.googleConnected && <option value="google">Google</option>}
@@ -254,7 +258,7 @@ const StudiesDetailsUser = ({ authState }) => {
 
                                 {selectedOption === 'csv' && (
                                     <Form.Group controlId="formCsvFile">
-                                        <Form.Label>Dołącz plik CSV:</Form.Label>
+                                        <Form.Label>{t('csv_file')}:</Form.Label>
                                         <Form.Control type="file" onChange={handleFileChange} />
                                     </Form.Group>
                                 )}
@@ -263,8 +267,9 @@ const StudiesDetailsUser = ({ authState }) => {
 
                             </Modal.Body>
                             <Modal.Footer>
+                                <Button onClick={() => {setUserImportModal(false)}}>{t('close')}</Button>
                                 <Button variant="primary" type="submit">
-                                    Wyślij żądanie
+                                    Import
                                 </Button>
                             </Modal.Footer>
                         </Form>

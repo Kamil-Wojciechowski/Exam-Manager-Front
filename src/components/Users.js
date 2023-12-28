@@ -9,6 +9,7 @@ import { FaCheck, FaTrashRestoreAlt } from "react-icons/fa";
 import { HiXMark } from "react-icons/hi2";
 import { IoIosSwap } from "react-icons/io";
 import toastr from 'toastr';
+import { useTranslation } from "react-i18next";
 
 
 
@@ -16,6 +17,7 @@ const Users = ({ authState }) => {
 
     useAuthNavigate(authState.isAuthenticated, true, authState.isTeacher, true);
 
+    const { t } = useTranslation(); 
     const [state, setState] = useState(1);
     const [groups, setGroups] = useState([]);
     const [addModal, setAddModal] = useState(false);
@@ -59,7 +61,6 @@ const Users = ({ authState }) => {
                     page: pageDetails.page - 1
                 }
             }).then((res) => {
-                console.log(res.data.data)
                 setUsers(res.data.data);
                 setPageDetails({
                     page: res.data.page + 1,
@@ -71,7 +72,6 @@ const Users = ({ authState }) => {
         const getGroups = async () => {
             axios.get("/users/groups").then(res => {
                 setGroups(res.data.data);
-                console.log(res.data.data);
             })
         }
 
@@ -102,7 +102,7 @@ const Users = ({ authState }) => {
 
     const handleRoleChange = async (userId) => {
         await axios.patch(`/users/${userId}`).then(res => {
-            toastr.success("Sukces");
+            toastr.success(t('success'));
             setState(state + 1);
         }).catch(error => {
             toastr.error(error.response.data.message);
@@ -111,7 +111,7 @@ const Users = ({ authState }) => {
 
     const handleDelete = async (userId) => {
         await axios.delete(`/users/${userId}`).then(res => {
-            toastr.success("Sukces");
+            toastr.success(t('success'));
             setState(state + 1);
         }).catch(error => {
             toastr.error(error.response.data.message);
@@ -126,7 +126,7 @@ const Users = ({ authState }) => {
         }).then(res => {
             clearForm();
             setAddModal(false);
-            toastr.success("Sukces");
+            toastr.success(t('success'));
             setState(state + 1);
         }).catch(error => {
             toastr.error(error.response.data.message);
@@ -142,16 +142,16 @@ const Users = ({ authState }) => {
     return (
         <div className='center-main centered-element'>
             <div className='centered-element'>
-                <Button onClick={() => { setAddModal(true) }}>Dodaj</Button>
+                <Button onClick={() => { setAddModal(true) }}>{t('add')}</Button>
                 <Table striped>
                     <thead>
                         <tr>
-                            <th>Firstname</th>
-                            <th>Lastname</th>
+                            <th>{t('firstname')}</th>
+                            <th>{t('lastname')}</th>
                             <th>Email</th>
-                            <th>Rola</th>
-                            <th>Zablokowany</th>
-                            <th>Opcje</th>
+                            <th>{t('permission')}</th>
+                            <th>{t('blocked')}</th>
+                            <th>{t('options')}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -168,9 +168,9 @@ const Users = ({ authState }) => {
                             </td>
                             <td>
                                 <select value={filters.role} name="role" onChange={handleChange}>
-                                    <option value="" disabled>Select user role</option>
+                                    <option value="" disabled>{t('select')}</option>
                                     {groups.map(role => (
-                                        <option key={role.key} value={role.key.split('_')[1]}>{role.key}</option>
+                                        <option key={role.key} value={role.key.split('_')[1]}>{t(role.key)}</option>
                                     ))}
                                 </select>
                             </td>
@@ -178,7 +178,7 @@ const Users = ({ authState }) => {
 
                             </td>
                             <td>
-                                <Button onClick={() => { searchItems(); }}>Search</Button>
+                                <Button onClick={() => { searchItems(); }}>{t('search')}</Button>
                             </td>
                         </tr>
 
@@ -195,7 +195,7 @@ const Users = ({ authState }) => {
                                     {item.email}
                                 </td>
                                 <td>
-                                    {item.currentRoles.join(", ")}
+                                    {t(item.currentRoles.join(", "))}
                                 </td>
                                 <td>
                                     {item.locked ? <FaCheck /> : <HiXMark />}
@@ -214,18 +214,18 @@ const Users = ({ authState }) => {
             <Modal show={addModal} onHide={() => { setAddModal(false); clearForm(); }}>
                 <Form onSubmit={(e) => { e.preventDefault(); handleAddUser(); }} onChange={handleChangeUser}>
                     <Modal.Header>
-                        Użytkownik
+                        {t('user')}
                     </Modal.Header>
                     <Modal.Body>
                         <Form.Group>
                             <Form.Label>
-                                Imie:
+                                {t('firstname')}:
                                 <Form.Control type='text' name='firstname' value={formData.firstname} />
                             </Form.Label>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>
-                                Nazwisko:
+                                {t('lastname')}:
                                 <Form.Control type='text' name='lastname' value={formData.lastname} />
                             </Form.Label>
                         </Form.Group>
@@ -248,8 +248,8 @@ const Users = ({ authState }) => {
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={() => { setAddModal(false); clearForm(); }}>Zamknij</Button>
-                        <Button type="submit">Zapisz</Button>
+                        <Button onClick={() => { setAddModal(false); clearForm(); }}>{t('close')}</Button>
+                        <Button type="submit">{t('add')}</Button>
                     </Modal.Footer>
                 </Form>
             </Modal>

@@ -12,10 +12,8 @@ const GoogleDisconnect = ({ authState }) => {
 
     useEffect(() => {
         axios.post("/oauth/disconnectLocalAccount").then(res => {
-            console.log(res);
             window.location.href = '/';
         }).catch(error => {
-            console.log(error);
             navigate("/")
         })
     }, []);

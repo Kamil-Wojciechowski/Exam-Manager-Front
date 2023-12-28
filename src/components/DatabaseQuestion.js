@@ -95,7 +95,7 @@ const DatabaseQuestion = ({ authState }) => {
         if (edit) {
             await axios.put("/questions/metadata/" + databaseId + "/questions/" + formData.id, formData).then(
                 res => {
-                    toastr.success("Edited");
+                    toastr.success(t('success'));
                     handleCloseModal();
                     setState(state + 1);
                 }
@@ -105,7 +105,7 @@ const DatabaseQuestion = ({ authState }) => {
         } else {
             await axios.post("/questions/metadata/" + databaseId + "/questions", formData).then(
                 res => {
-                    toastr.success("Created");
+                    toastr.success(t('success'));
                     handleCloseModal();
                     setState(state + 1);
                 }
@@ -147,7 +147,7 @@ const DatabaseQuestion = ({ authState }) => {
 
     const handleImportForm = async () => {
         if (!file) {
-            toastr.error('Please provide a file');
+            toastr.error(t('provide_file'));
             return;
         }
 
@@ -170,16 +170,16 @@ const DatabaseQuestion = ({ authState }) => {
     return (
         <div className='center-main centered-element'>
             <div className='centered-element'>
-                <Button onClick={() => { setShowModal(true) }}>Add</Button>
+                <Button onClick={() => { setShowModal(true) }}>{t('add')}</Button>
                 <Button onClick={() => { setImportModal(true) }}>Import</Button>
                 <Table striped>
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Question</th>
-                            <th>Typ</th>
-                            <th>Poprawne</th>
-                            <th>Options</th>
+                            <th>{t('question')}</th>
+                            <th>{t('type')}</th>
+                            <th>{t('correct')}</th>
+                            <th>{t('options')}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -189,7 +189,7 @@ const DatabaseQuestion = ({ authState }) => {
                                 <tr key={index}>
                                     <td>{item.id}</td>
                                     <td>{item.question}</td>
-                                    <td>{item.questionType}</td>
+                                    <td>{t(item.questionType)}</td>
                                     <td>{item.valid ? <FaCheck /> : <HiXMark />}</td>
                                     <td>
                                         <MdOutlineQuestionAnswer onClick={() => {
@@ -212,24 +212,24 @@ const DatabaseQuestion = ({ authState }) => {
             <Modal show={showModal} onHide={() => (handleCloseModal())} >
                 <Form onSubmit={(e) => { e.preventDefault(); handleForm(); }}>
                     <Modal.Header>
-                        Pytanie
+                        {t('question')}
                     </Modal.Header>
                     <Modal.Body>
 
                         <Form.Group>
                             <Form.Label>
-                                Pytanie:
+                                {t('question')}:
                                 <Form.Control type="text" name="question" value={formData.question} onChange={handleChange}></Form.Control>
                             </Form.Label>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>
-                                <p>Typ:</p>
+                                <p>{t('type')}:</p>
                                 <Form.Control as="select" value={formData.questionType ? formData.questionType : ''} onChange={handleOptionChange}>
                                     <option value="" disabled>Select an item</option>
                                     {
                                         questionsTypes.map(item => (
-                                            <option key={item} value={item}>{item}</option>
+                                            <option key={item} value={item}>{t(item)}</option>
                                         ))
                                     }
                                 </Form.Control>
@@ -237,21 +237,21 @@ const DatabaseQuestion = ({ authState }) => {
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={() => { setShowModal(false) }}>Zamknij</Button>
-                        <Button type="submit">{edit ? "Edytuj" : "Utwórz"}</Button>
+                        <Button onClick={() => { setShowModal(false) }}>{t('close')}</Button>
+                        <Button type="submit">{edit ? t('edit') : t('add')}</Button>
                     </Modal.Footer>
                 </Form>
             </Modal>
 
             <Modal show={showDeleteModal} onHide={() => { setShowDeleteModal(false); setItemId(0); }} >
                 <Modal.Header>
-                    Pytanie
+                    {t('question')}
                 </Modal.Header>
                 <Modal.Body>
-                    Czy chcesz usunąć dany element?
+                    {t('do_you_want_delete_this')}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => { handleDelete(); }}>Usuń</Button>
+                    <Button onClick={() => { handleDelete(); }}>{t('remove')}</Button>
                 </Modal.Footer>
             </Modal>
 
@@ -259,17 +259,17 @@ const DatabaseQuestion = ({ authState }) => {
 
                 <Form onSubmit={(e) => { e.preventDefault(); handleImportForm(); }}>
                     <Modal.Header>
-                        Zaimportuj pytania.
+                        {t('import_questions')}
                     </Modal.Header>
                     <Modal.Body>
                         <Form.Group controlId="formCsvFile">
-                            <Form.Label>Dołącz plik CSV:</Form.Label>
+                            <Form.Label>{t('csv_file')}:</Form.Label>
                             <Form.Control type="file" onChange={handleFileChange} />
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" type="submit">
-                            Wyślij żądanie
+                            Import
                         </Button>
                     </Modal.Footer>
                 </Form>

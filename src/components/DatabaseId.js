@@ -5,10 +5,11 @@ import useAuthNavigate from "../js/AuthNavigate";
 import DatabaseForm from "./forms/DatabaseForm";
 import { Button, Modal } from "react-bootstrap";
 import toastr from "toastr";
+import { useTranslation } from "react-i18next";
 
 
 const DatabaseId = ({ authState }) => {
-
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     useAuthNavigate(authState.isAuthenticated, true, authState.user.currentRoles.includes('ROLE_TEACHER'), true);
@@ -88,16 +89,16 @@ const DatabaseId = ({ authState }) => {
     return (
         <div className='center-main'>
             <div className='centered-element'>
-                <Button onClick={() => {navigate("/admin/database/" + databaseId + "/questions")}}>Pytania</Button>
-            <Button onClick={() => {setShowEditModal(true)}}>Edytuj</Button>
-            <Button onClick={() => {setShowDeleteModal(true)}}>Usuń</Button>
-                <p>Name:</p>
+                <Button onClick={() => {navigate("/admin/database/" + databaseId + "/questions")}}>{t('questions')}</Button>
+            <Button onClick={() => {setShowEditModal(true)}}>{t('edit')}</Button>
+            <Button onClick={() => {setShowDeleteModal(true)}}>{t('remove')}</Button>
+                <p>{t('name')}:</p>
                 <p>{databaseDetails.name}</p>
 
-                <p>Craeted at:</p>
+                <p>{t('created_at')}:</p>
                 <p>{formatDate(databaseDetails.createdAt)}</p>
 
-                <p>Update at:</p>
+                <p>{t('update_at')}:</p>
                 <p>{formatDate(databaseDetails.updatedAt)}</p>
 
             </div>
@@ -105,13 +106,13 @@ const DatabaseId = ({ authState }) => {
             <DatabaseForm showUpdateModal={showEditModal} closeModal={closeModal} databaseId={databaseId} itemData={databaseDetails} changeState={changeState}></DatabaseForm>
             <Modal show={showDeleteModal} onHide={() => {setShowDeleteModal(false);}}>
                 <Modal.Header>
-                    Database
+                    {t('database')}
                 </Modal.Header>
                 <Modal.Body>
-                    Czy chcesz usunąć baze {databaseDetails.name}?
+                    {t('do_you_want_delete')} {databaseDetails.name}?
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => {handleDelete();}}>Usuń</Button>
+                    <Button onClick={() => {handleDelete();}}>{t('remove')}</Button>
                 </Modal.Footer>
             </Modal>
         </div>

@@ -75,12 +75,12 @@ const Dashboard = ({ authState }) => {
   }
 
   if (data.data === []) {
-    return <div className='center-main'><div className='centered-element' />Brak danych</div>
+    return <div className='center-main'><div className='centered-element' />{t('no_data')}</div>
   }
 
   return (
     <div className='content'>
-      {authState.user.currentRoles.includes('ROLE_TEACHER') && <Button variant="primary" onClick={() => {openModal();}}>Dodaj</Button>}
+      {authState.user.currentRoles.includes('ROLE_TEACHER') && <Button variant="primary" onClick={() => {openModal();}}>{t('add')}</Button>}
       <StudiesForm authState={authState} isCreate={true} showModal={showModal} closeModal={closeModal}></StudiesForm>
 
 

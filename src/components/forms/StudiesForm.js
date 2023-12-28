@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button, Modal } from 'react-bootstrap';
 import axios from '../../js/AxiosInstance';
 import toastr from 'toastr';
+import { useTranslation } from 'react-i18next';
 
 const StudiesForm = ({ authState, studiesData, studiesId, isCreate, showModal, closeModal, changeState }) => {
+    const { t } = useTranslation();
+
     const [formData, setFormData] = useState({
         name: '',
         classroomId: '',
@@ -53,17 +56,17 @@ const StudiesForm = ({ authState, studiesData, studiesId, isCreate, showModal, c
     const handleForm = async () => {
         if (isCreate) {
             axios.post("/studies", formData).then(res => {
-                toastr.success("Item updated!");
+                toastr.success(t('success'));
                 window.location.reload();
-                closeModal(); // Close the modal after successful update
+                closeModal(); 
             }).catch(error => {
                 toastr.error(error.response.data.message);
             });
         } else {
             axios.patch("/studies/" + studiesId, formData).then(res => {
-                toastr.success("Item updated!");
+                toastr.success(t('success'));
                 window.location.reload();
-                closeModal(); // Close the modal after successful update
+                closeModal();
             }).catch(error => {
                 toastr.error(error.response.data.message);
             });
@@ -74,19 +77,19 @@ const StudiesForm = ({ authState, studiesData, studiesId, isCreate, showModal, c
         <Modal show={showModal} onHide={closeModal}>
             <Form onSubmit={(e) => { e.preventDefault(); handleForm(); }} >
                 <Modal.Header>
-                    Grupa
+                    {t('group')}
                 </Modal.Header>
                 <Modal.Body>
                     <Form.Group>
                         <Form.Label>
-                            <p>Nazwa:</p>
+                            <p>{t('name')}:</p>
                             <Form.Control input='text' name='name' value={formData.name} onChange={handleChange} />
                         </Form.Label>
                         {(authState.user.googleConnected && classroomData) && (
                             <Form.Label>
                                 <p>Classroom:</p>
                                 <Form.Control as="select" value={formData.classroomId ? formData.classroomId : ''} onChange={handleOptionChange}>
-                                    <option value="" disabled>Select an item</option>
+                                    <option value="" disabled>{t('select')}</option>
                                     {
                                         classroomData.map(item => (
                                             <option key={item.id} value={item.id}>{item.name}</option>
@@ -98,10 +101,11 @@ const StudiesForm = ({ authState, studiesData, studiesId, isCreate, showModal, c
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
+                    <Button onClick={() => {closeModal();}}>{t('close')}</Button>
                     {(isCreate) ?
-                        <Button className="main_button" variant='primary' type="submit">Dodaj</Button>
+                        <Button className="main_button" variant='primary' type="submit">{t('add')}</Button>
                         :
-                        <Button className="main_button" variant='primary' type="submit">Zaaktualizuj</Button>
+                        <Button className="main_button" variant='primary' type="submit">{t('update')}</Button>
                     }
                 </Modal.Footer>
             </Form>

@@ -9,6 +9,7 @@ import { FaCheck } from "react-icons/fa";
 import { HiXMark } from "react-icons/hi2";
 import { Button, Modal, Table } from "react-bootstrap";
 import { MdQuestionAnswer } from "react-icons/md";
+import { useTranslation } from "react-i18next";
 
 
 
@@ -16,6 +17,7 @@ const ExamResults = ({ authState }) => {
     useAuthNavigate(authState.isAuthenticated, true, authState.isTeacher, true);
 
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const { studiesId, examId } = useParams();
     const [results, setResults] = useState([]);
     const [examDetails, setExamDetails] = useState({});
@@ -103,7 +105,6 @@ const ExamResults = ({ authState }) => {
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-            console.log("hit");
             getExamGroups();
         }, 15000);
 
@@ -132,7 +133,7 @@ const ExamResults = ({ authState }) => {
             }
 
             await axios.patch(`/studies/${studiesId}/exams/${examId}/groups/${item}/questions/${changeItem.id}`, body).then(res => {
-                toastr.success("Item updated");
+                toastr.success(t('success'));
                 setItemChanged(itemChanged + 1)
             }).catch(error => {
                 toastr.error(error.response.data.message);
@@ -150,7 +151,7 @@ const ExamResults = ({ authState }) => {
 
     const handleSendResults = async () => {
         await axios.post(`/studies/${studiesId}/exams/${examId}/submission`).then(res => {
-            toastr.success("Wyniki zostały zwrócone");
+            toastr.success(t('results_returned'));
             setSendResults(false);
         }).catch(error => {
             toastr.error(error.response.data.message);
@@ -160,18 +161,18 @@ const ExamResults = ({ authState }) => {
     return (
         <div className='center-main centered-element'>
             <div className='centered-element'>
-                <Button onClick={() => {setSendResults(true)}}>Oddaj</Button>
+                <Button onClick={() => {setSendResults(true)}}>{t('return')}</Button>
                 <Table striped>
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Imie</th>
-                            <th>Nazwisko</th>
-                            <th>Adres IP</th>
-                            <th>Punktacja</th>
-                            <th>Rozpoczęte</th>
-                            <th>Wysłane</th>
-                            <th>Opcje</th>
+                            <th>{t('firstname')}</th>
+                            <th>{t('lastname')}</th>
+                            <th>{t('ip_address')}</th>
+                            <th>{t('points')}</th>
+                            <th>{t('started')}</th>
+                            <th>{t('sent')}</th>
+                            <th>{t('options')}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -200,19 +201,19 @@ const ExamResults = ({ authState }) => {
 
             <Modal show={showAnswerModal} onHide={() => { handleCloseModal() }}>
                 <Modal.Header>
-                    Odpowiedzi
+                    {t('answers')}
                 </Modal.Header>
                 <Modal.Body>
                     <div>
                         <label>
-                            Punktacja: {points}{"/" + (examDetails.questionPerUser * 2)}
+                            {t('points')}: {points}{"/" + (examDetails.questionPerUser * 2)}
                         </label>
                     </div>
                     <Table striped>
                         <thead>
                             <tr>
-                                <th>Pytanie</th>
-                                {expandedItem && <th>Detale</th>}
+                                <th>{t('question')}</th>
+                                {expandedItem && <th>{t('details')}</th>}
                             </tr>
                         </thead>
                         <tbody>
@@ -223,34 +224,34 @@ const ExamResults = ({ authState }) => {
                                         expandedItem === item.id &&
                                         <td>
                                             <label>
-                                                Correct:
+                                                {t('correct')}:
                                                 <select
                                                     disabled={!sent}
-                                                    value={changeItem.correct ? changeItem.correct : (item.correct ? item.correct : "NOT_CORRECT")}
+                                                    value={changeItem.correct ? changeItem.correct : (item.correct ? t(item.correct) : t("NOT_CORRECT"))}
                                                     onChange={(e) => {if(sent) handleCorrectChange(item.id, e.target.value)}}
                                                 >
                                                     {answerCorrectOptions.map((option) => (
                                                         <option key={option} value={option}>
-                                                            {option}
+                                                            {t(option)}
                                                         </option>
                                                     ))}
                                                 </select>
                                             </label>
                                             <label>
-                                                Possible Answers: {item.question.answers.map(answer => answer.answer).join(", ")}
+                                                {t('possible_answers')}: {item.question.answers.map(answer => answer.answer).join(", ")}
                                             </label>
                                             <label>
-                                                Correct Answers:  {item.question.answers.filter(answer => answer.correct)
+                                                {t('correct_answers')}:  {item.question.answers.filter(answer => answer.correct)
                                                     .map(correctAnswer => correctAnswer.answer)
                                                     .join(", ")}
                                             </label>
                                             <label>
-                                                User Answered: {item.answer.map(answer => answer.questionAnswer.answer).join(", ")}
+                                                {t('user_answers')}: {item.answer.map(answer => answer.questionAnswer.answer).join(", ")}
                                             </label>
                                             <label>
-                                                Odpowiedz zmieniona: {item.changedManually ? <FaCheck/> : <HiXMark/>}
+                                                {t('answer_changed')}: {item.changedManually ? <FaCheck/> : <HiXMark/>}
                                             </label>
-                                            {changeItem.id && <Button onClick={() => { saveChanges() }}>Zapisz</Button>}
+                                            {changeItem.id && <Button onClick={() => { saveChanges() }}>{t('edit')}</Button>}
                                         </td>
                                     }
                                 </tr>

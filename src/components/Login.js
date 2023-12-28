@@ -91,7 +91,7 @@ const Login = ({ authState }) => {
         window.location.href = '/';
 
       } catch (error) {
-        toastr.error("Nie udało się zalogować");
+        toastr.error(t('login_failed'));
       }
     }
   };
@@ -119,11 +119,11 @@ const Login = ({ authState }) => {
               <div style={{ color: 'red' }}>{errors.password}</div>
             </Form.Group>
             <div>
-              <Button className="main_button" variant='primary' type="submit">Zaloguj się</Button>
+              <Button className="main_button" variant='primary' type="submit">{t('sign_in')}</Button>
             </div>
           </Form>
           <div>
-            <a href='/login/recovery' >Zapomniałeś hasło?</a>
+            <a href='/login/recovery'>{t('recovery')}</a>
           </div>
         </div>
       </div>

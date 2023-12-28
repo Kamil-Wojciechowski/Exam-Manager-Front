@@ -5,11 +5,13 @@ import axios from "../js/AxiosInstance";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import QuestionGenerator from "./forms/exam/QuestionGenerator";
 import toastr from 'toastr';
+import { useTranslation } from "react-i18next";
 
 
 const ExamParticipate = ({ authState }) => {
     useAuthNavigate(authState.isAuthenticated, true, authState.isTeacher, false);
 
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     const { studiesId, examId } = useParams();
@@ -90,9 +92,9 @@ const ExamParticipate = ({ authState }) => {
                     ))}
                 </Row>
 
-                <Button disabled={pageDetails.page === 0} onClick={() => { handleDown(); }} >Poprzedni</Button>
-                <Button disabled={pageDetails.page === pageDetails.pages - 1} onClick={() => { handleUp(); }}>Następny</Button>
-                { pageDetails.page === pageDetails.pages - 1 && <Button onClick={() => handleSend()}>Wyślij</Button> }
+                <Button disabled={pageDetails.page === 0} onClick={() => { handleDown(); }} >{t('previous')}</Button>
+                <Button disabled={pageDetails.page === pageDetails.pages - 1} onClick={() => { handleUp(); }}>{t('next')}</Button>
+                { pageDetails.page === pageDetails.pages - 1 && <Button onClick={() => handleSend()}>{t('send')}</Button> }
                 <Form>
                     {question.question && (
                         <QuestionGenerator question={question} answers={answers} setAnswers={setAnswers}></QuestionGenerator>

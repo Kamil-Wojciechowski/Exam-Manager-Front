@@ -9,8 +9,8 @@ i18n.use(initReactI18next).init({
     en: enTranslations,
     pl: plTranslations
   },
-  lng: 'pl', // Default language
-  fallbackLng: 'pl', // Fallback language if a translation is missing
+  lng: 'pl', 
+  fallbackLng: 'pl',
   interpolation: {
     escapeValue: false,
   },

@@ -1,11 +1,14 @@
 import { Form } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 const OpenAnswer = ({ question }) => {
-    // Render form for open answer question
+  const { t } = useTranslation();
+  
+
     return (
       <Form.Group>
         <Form.Label>{question.question.question}</Form.Label>
-        <Form.Control as="textarea" rows={4} placeholder="Enter your answer" />
+        <Form.Control as="textarea" rows={4} placeholder={t('enter_answer')} />
       </Form.Group>
     );
   };

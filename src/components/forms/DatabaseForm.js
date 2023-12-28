@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import axios from "../../js/AxiosInstance";
 import toastr from "toastr";
+import { useTranslation } from "react-i18next";
 
 const DatabaseForm = ({ showAddModal, showUpdateModal, closeModal, databaseId, itemData, changeState }) => {
+    const { t } = useTranslation();
+
     const [formData, setFormData] = useState({
         name: ""
     })
@@ -29,7 +32,7 @@ const DatabaseForm = ({ showAddModal, showUpdateModal, closeModal, databaseId, i
             await axios.post("/questions/metadata", formData).then(res => {
                 changeState();
                 closeModal();
-                toastr.success("Success!");
+                toastr.success(t('success'));
             }).catch(error => {
                 toastr.error(error.response.data.message);
             });
@@ -37,7 +40,7 @@ const DatabaseForm = ({ showAddModal, showUpdateModal, closeModal, databaseId, i
             await axios.put("/questions/metadata/" + databaseId, formData).then(res => {
                 changeState();
                 closeModal();
-                toastr.success("Success!");
+                toastr.success(t('success'));
             }).catch(error => {
                 toastr.error(error.response.data.message);
             })
@@ -48,19 +51,19 @@ const DatabaseForm = ({ showAddModal, showUpdateModal, closeModal, databaseId, i
         <Modal show={showAddModal || showUpdateModal} onHide={closeModal}>
             <Form onSubmit={(e) => {e.preventDefault(); handleForm();}}>
                 <Modal.Header>
-                    Database
+                    {t('database')}
                 </Modal.Header>
                 <Modal.Body>
                     <Form.Label>
-                        <p>Nazwa:</p>
+                        <p>{t('name')}:</p>
                         <Form.Control input="text" name="name" value={formData.name} onChange={handleChange}></Form.Control>
                     </Form.Label>
                     
                 </Modal.Body>
                 <Modal.Footer>
                     <Button type="submit">
-                        {showAddModal && "Dodaj"}
-                        {showUpdateModal && "Zaaktualizuj"}
+                        {showAddModal && t('add')}
+                        {showUpdateModal && t('update')}
                     </Button>
                 </Modal.Footer>
             </Form>

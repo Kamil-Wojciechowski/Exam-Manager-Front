@@ -6,13 +6,15 @@ import toastr from 'toastr';
 import { Button, Form, Modal, Table } from "react-bootstrap";
 import { FaEdit, FaBackward, FaEye  } from "react-icons/fa";
 import { IoTrashBin } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 
 
 const StudiesExams = ({ authState }) => {
     useAuthNavigate(authState.isAuthenticated, true);
 
+    
     const { studiesId } = useParams();
-
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({
         name: '',
         questionMetadataId: '',
@@ -43,7 +45,6 @@ const StudiesExams = ({ authState }) => {
                 }
             }).then(res => {
                 setExams(res.data.data);
-                console.log(res.data.data);
             })
         };
 
@@ -117,7 +118,7 @@ const StudiesExams = ({ authState }) => {
       
           if(formData.id) {
             await axios.patch(`/studies/${studiesId}/exams/${formData.id}`, examData).then(res => {
-                toastr.success("Sukces");
+                toastr.success(t('success'));
                 setState(state+1);
                 handleCloseModal();
     
@@ -126,7 +127,7 @@ const StudiesExams = ({ authState }) => {
             })
           } else {
             await axios.post(`/studies/${studiesId}/exams`, examData).then(res => {
-                toastr.success("Sukces");
+                toastr.success(t('success'));
                 setState(state+1);
                 handleCloseModal();
     
@@ -181,7 +182,7 @@ const StudiesExams = ({ authState }) => {
 
     const handleDelete = async () => {
         await axios.delete(`/studies/${studiesId}/exams/${formData.id}`).then(res => {
-            toastr.success("Sukces");
+            toastr.success(t('success'));
             setState(state+1);
             handleCloseDeleteModal();
 
@@ -203,16 +204,13 @@ const StudiesExams = ({ authState }) => {
             questionPerUser: item.questionPerUser
           };
 
-          console.log(body);
-
 
         await axios.patch(`/studies/${studiesId}/exams/${item.id}`, body).then(res => {
-            toastr.success("Sukces");
+            toastr.success(t('success'));
             setState(state+1);
             setArchived(false);
             clearForm();
         }).catch(error => {
-            console.log(error);
             toastr.error(error.response.data.message);
             clearForm();
         })
@@ -245,10 +243,10 @@ const StudiesExams = ({ authState }) => {
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Nazwa</th>
-                            <th>Rozpoczęcie</th>
-                            <th>Zakończenie</th>
-                            <th>Opcje</th>
+                            <th>{t('name')}</th>
+                            <th>{t('starts')}</th>
+                            <th>{t('ends')}</th>
+                            <th>{t('options')}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -260,15 +258,15 @@ const StudiesExams = ({ authState }) => {
                                     <td>{formatDate(item.startAt)}</td>
                                     <td>{formatDate(item.endAt)}</td>
                                     {owner && <td>
-                                        <FaEye onClick={() => { navigate(`/studies/${studiesId}/exams/${item.id}`)}} /> {/* TODO */}
+                                        <FaEye onClick={() => { navigate(`/studies/${studiesId}/exams/${item.id}`)}} />
                                         {!archived && <FaEdit onClick={() => { triggerEdit(item) }}></FaEdit>}
                                         {archived && <FaBackward onClick={() => { handleBack(item) }}/>}
                                         <IoTrashBin onClick={() => { triggerDelete(item); }} />
 
                                         </td>}
                                     {!owner && <td>
-                                        <Button disabled={!isDateInRange(item.startAt, item.endAt)} onClick={() => {navigate(`/studies/${studiesId}/exams/${item.id}/participate`);}} >Start</Button>
-                                        <Button disabled={!item.showResults} onClick={() => {handleShowResult(item.id)}}>Wyniki</Button>
+                                        <Button disabled={!isDateInRange(item.startAt, item.endAt)} onClick={() => {navigate(`/studies/${studiesId}/exams/${item.id}/participate`);}}>Start</Button>
+                                        <Button disabled={!item.showResults} onClick={() => {handleShowResult(item.id)}}>{t('result')}</Button>
                                         </td>}
                                 </tr>
                             ))
@@ -280,14 +278,14 @@ const StudiesExams = ({ authState }) => {
             <Modal show={showModal} onHide={() => { handleCloseModal(); }}>
                 <Form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
                     <Modal.Header>
-                        Egzamin
+                        {t('exam')}
                     </Modal.Header>
                     <Modal.Body>
                         <Form.Group controlId="formName">
-                            <Form.Label>Name</Form.Label>
+                            <Form.Label>{t('name')}</Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="Enter exam name"
+                                placeholder={t('name')}
                                 name="name"
                                 value={formData.name}
                                 onChange={handleChange}
@@ -296,7 +294,7 @@ const StudiesExams = ({ authState }) => {
                         </Form.Group>
 
                         <Form.Group controlId="formQuestionMetadataId">
-                                <Form.Label>Question Metadata ID</Form.Label>
+                                <Form.Label>{t('database')}</Form.Label>
                                 <Form.Control
                                     as="select"
                                     name="questionMetadataId"
@@ -304,7 +302,7 @@ const StudiesExams = ({ authState }) => {
                                     onChange={handleChange}
                                     required
                                 >
-                                    <option value="" disabled>Select Question Metadata</option>
+                                    <option value="" disabled>{t('select')}</option>
                                     {databases.map((database) => (
                                         <option key={database.id} value={database.id}>
                                             {database.name}
@@ -314,7 +312,7 @@ const StudiesExams = ({ authState }) => {
                             </Form.Group>
 
                         <Form.Group controlId="formStartAt">
-                            <Form.Label>Start At</Form.Label>
+                            <Form.Label>{t('starts')}</Form.Label>
                             <Form.Control
                                 type="datetime-local"
                                 name="startAt"
@@ -325,7 +323,7 @@ const StudiesExams = ({ authState }) => {
                         </Form.Group>
 
                         <Form.Group controlId="formEndAt">
-                            <Form.Label>End At</Form.Label>
+                            <Form.Label>{t('ends')}</Form.Label>
                             <Form.Control
                                 type="datetime-local"
                                 name="endAt"
@@ -336,10 +334,10 @@ const StudiesExams = ({ authState }) => {
                         </Form.Group>
 
                         <Form.Group controlId="formQuestionPerUser">
-                            <Form.Label>Questions Per User</Form.Label>
+                            <Form.Label>{t('question_per_user')}</Form.Label>
                             <Form.Control
                                 type="number"
-                                placeholder="Enter number of questions per user"
+                                placeholder={t('question_per_user')}
                                 name="questionPerUser"
                                 value={formData.questionPerUser}
                                 onChange={handleChange}
@@ -348,18 +346,18 @@ const StudiesExams = ({ authState }) => {
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={() => { handleCloseModal(); }}>Zamknij</Button>
-                        <Button variant="primary" type="submit">{formData.id ? "Edytuj" : "Dodaj"}</Button>
+                        <Button onClick={() => { handleCloseModal(); }}>{t('close')}</Button>
+                        <Button variant="primary" type="submit">{formData.id ? t('edit') : t('add')}</Button>
                     </Modal.Footer>
                 </Form>
             </Modal>
 
             <Modal show={showDeleteModal} onHide={() => { handleCloseDeleteModal(); }} >
                 <Modal.Header>
-                    Egzamin
+                    {t('exam')}
                 </Modal.Header>
                 <Modal.Body>
-                    Czy chcesz usunąć dany element?
+                    {t('do_you_want_delete_this')}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={() => { handleDelete(); }}>Usuń</Button>
@@ -368,13 +366,13 @@ const StudiesExams = ({ authState }) => {
 
             <Modal show={showResults} onHide={() => {setShowResults(false)}}>
                 <Modal.Header>
-                    Wynik
+                    {t('result')}
                 </Modal.Header>
                 <Modal.Body>
-                    Twój wynik to: {points}/{maxPoints}
+                    {t('result_text')}: {points}/{maxPoints}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => {setShowResults(false)}}>Zamknij</Button>
+                    <Button onClick={() => {setShowResults(false)}}>{t('close')}</Button>
                 </Modal.Footer>
             </Modal>
         </div>

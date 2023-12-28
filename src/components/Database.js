@@ -6,10 +6,12 @@ import Pagination from "./general/Pagination";
 import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import DatabaseForm from "./forms/DatabaseForm";
+import { useTranslation } from "react-i18next";
 
 const Database = ({ authState }) => {
     const navigate = useNavigate();
-    useAuthNavigate(authState.isAuthenticated, true, authState.user.currentRoles.includes('ROLE_TEACHER'), true);
+    const { t } = useTranslation();
+    useAuthNavigate(authState.isAuthenticated, true, authState.isTeacher, true);
 
     const [addModal, setAddModal] = useState(false);
 
@@ -57,7 +59,7 @@ const Database = ({ authState }) => {
 
     return (
         <div className='content'>
-            <Button onClick={() => { setAddModal(true); }} >Add</Button>
+            <Button onClick={() => { setAddModal(true); }} >{t('add')}</Button>
             <div className='dashboard'>
                 {databases.map((item, index) => (
                     <div className="dashboard_item" key={item.id} onClick={() => { navigate("/admin/database/" + item.id) }}>
