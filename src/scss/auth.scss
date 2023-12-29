@@ -3,9 +3,9 @@
 	height: 100vh;
 
     &-border {
-        border: solid 1px $mainColor;
-        border-radius: 10px;
+        
         padding: 4rem;
         @include shadow;
+        @include border;
     }
 }

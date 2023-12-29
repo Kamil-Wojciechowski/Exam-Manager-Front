@@ -59,7 +59,9 @@ const Database = ({ authState }) => {
 
     return (
         <div className='content'>
-            <Button onClick={() => { setAddModal(true); }} >{t('add')}</Button>
+            <div className = "admin_add">
+                <Button className="main_button" variant="primary" onClick={() => { setAddModal(true); }} >{t('add')}</Button>
+            </div>
             <div className='dashboard'>
                 {databases.map((item, index) => (
                     <div className="dashboard_item" key={item.id} onClick={() => { navigate("/admin/database/" + item.id) }}>
@@ -68,7 +70,10 @@ const Database = ({ authState }) => {
 
                 ))}
             </div>
-            <Pagination total={pageDetails.pages} currentPage={pageDetails.page} onPageChange={handlePageChange} />
+
+            <div className="dashboard_pages">
+                <Pagination total={pageDetails.pages} currentPage={pageDetails.page} onPageChange={handlePageChange} />
+            </div>
 
             <DatabaseForm showAddModal={addModal} closeModal={closeModal} changeState={changeState}></DatabaseForm>
         </div>

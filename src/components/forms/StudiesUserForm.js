@@ -99,12 +99,12 @@ const StudiesUserForm = ({ showModal, closeModal, addedUsers, studiesId }) => {
     }
 
     return (
-        <Modal show={showModal} onHide={closeModal}>
+        <Modal size="xl" show={showModal} onHide={closeModal}>
             <Modal.Header>
                 {t('add_user')}
             </Modal.Header>
             <Modal.Body>
-                <Table striped>
+                <Table>
                     <thead>
                         <tr>
                             <th>{t('choose')}</th>
@@ -115,7 +115,7 @@ const StudiesUserForm = ({ showModal, closeModal, addedUsers, studiesId }) => {
                     </thead>
                     <tbody>
                         <tr key="search">
-                            <td><Button onClick={() => { searchItems(); }}>Search</Button></td>
+                            <td><Button className="main_button" onClick={() => { searchItems(); }}>{t('search')}</Button></td>
                             <td>
                                 <Form.Control input='text' name="firstname" value={filters.firstname} onChange={handleChange} />
                             </td>
@@ -131,15 +131,16 @@ const StudiesUserForm = ({ showModal, closeModal, addedUsers, studiesId }) => {
                             <tr key={item.id}>
                                 <td>
                                     <Button
+                                    className={
+                                        usersToAdd.some((addedUser) => addedUser.id === item.id) ||
+                                                addedUsers.some((addedUser) => addedUser.user.id === item.id)
+                                                ? ""
+                                                : "main_button"
+                                    }
                                         onClick={() => {
                                             handleUsers(item);
                                         }}
-                                        variant={
-                                            usersToAdd.some((addedUser) => addedUser.id === item.id) ||
-                                                addedUsers.some((addedUser) => addedUser.user.id === item.id)
-                                                ? "danger"
-                                                : "primary"
-                                        }
+                                        variant="secondary"
                                         disabled={
                                             addedUsers.some((addedUser) => addedUser.user.id === item.id)
                                         }
@@ -169,6 +170,9 @@ const StudiesUserForm = ({ showModal, closeModal, addedUsers, studiesId }) => {
 
             </Modal.Body>
             <Modal.Footer>
+            <Button variant='secondary' onClick={() => { closeModal() }}>
+                                {t('close')}
+                            </Button>
                 <Button className="main_button" variant='primary' onClick={() => {addUsersToStudies()}}>{t('add')}</Button>
             </Modal.Footer>
         </Modal>

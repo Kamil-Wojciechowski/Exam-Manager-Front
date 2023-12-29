@@ -89,17 +89,15 @@ const DatabaseId = ({ authState }) => {
     return (
         <div className='center-main'>
             <div className='centered-element'>
-                <Button onClick={() => {navigate("/admin/database/" + databaseId + "/questions")}}>{t('questions')}</Button>
-            <Button onClick={() => {setShowEditModal(true)}}>{t('edit')}</Button>
-            <Button onClick={() => {setShowDeleteModal(true)}}>{t('remove')}</Button>
-                <p>{t('name')}:</p>
-                <p>{databaseDetails.name}</p>
+                <h2>{t('databases')}</h2>
+                <Button className="main_button" onClick={() => {navigate("/admin/database/" + databaseId + "/questions")}}>{t('questions')}</Button>
+                <Button className="main_button" onClick={() => {setShowEditModal(true)}}>{t('edit')}</Button>
+                <Button className="main_button" onClick={() => {setShowDeleteModal(true)}}>{t('remove')}</Button>
+                <p>{t('name')}: {databaseDetails.name}</p>
 
-                <p>{t('created_at')}:</p>
-                <p>{formatDate(databaseDetails.createdAt)}</p>
+                <p>{t('created_at')}: {formatDate(databaseDetails.createdAt)}</p>
 
-                <p>{t('update_at')}:</p>
-                <p>{formatDate(databaseDetails.updatedAt)}</p>
+                <p>{t('update_at')}: {formatDate(databaseDetails.updatedAt)}</p>
 
             </div>
 
@@ -112,7 +110,9 @@ const DatabaseId = ({ authState }) => {
                     {t('do_you_want_delete')} {databaseDetails.name}?
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => {handleDelete();}}>{t('remove')}</Button>
+                    <Button variant="secondary" onClick={() => { setShowDeleteModal(false); }}>{t('close')}</Button>
+
+                    <Button className="main_button" onClick={() => {handleDelete();}}>{t('remove')}</Button>
                 </Modal.Footer>
             </Modal>
         </div>

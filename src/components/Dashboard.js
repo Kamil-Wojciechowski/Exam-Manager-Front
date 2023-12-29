@@ -80,9 +80,11 @@ const Dashboard = ({ authState }) => {
 
   return (
     <div className='content'>
-      {authState.user.currentRoles.includes('ROLE_TEACHER') && <Button variant="primary" onClick={() => {openModal();}}>{t('add')}</Button>}
-      <StudiesForm authState={authState} isCreate={true} showModal={showModal} closeModal={closeModal}></StudiesForm>
-
+      <div className = "admin_add">
+        {authState.user.currentRoles.includes('ROLE_TEACHER') && <Button className="main_button" variant="primary" onClick={() => {openModal();}}>{t('add')}</Button>}
+        <StudiesForm authState={authState} isCreate={true} showModal={showModal} closeModal={closeModal}></StudiesForm>
+      </div>
+      
 
       <div className='dashboard'>
         {data.map((item, index) => (
@@ -90,9 +92,12 @@ const Dashboard = ({ authState }) => {
             <h2>{item.name}</h2>
           </div>
         ))}
+        
       </div>
-
-      <Pagination total={pageDetails.pages} currentPage={pageDetails.page} onPageChange={handlePageChange} />
+      <div className="dashboard_pages">
+          <Pagination total={pageDetails.pages} currentPage={pageDetails.page} onPageChange={handlePageChange} />
+        </div>
+      
     </div>
   );
 };

@@ -235,11 +235,12 @@ const StudiesExams = ({ authState }) => {
     }
 
     return (
-        <div className='center-main centered-element'>
+        <div className='center-main'>
             <div className='centered-element'>
-                <Button hidden={!owner} onClick={() => { setShowModal(true); }} >Dodaj</Button>
-                <Button hidden={!owner} onClick={() => { setArchived(!archived); }}>Zarchiwizowany</Button>
-                <Table striped>
+                <h2>{t("exams")}</h2>
+                <Button className="main_button" hidden={!owner} onClick={() => { setShowModal(true); }} >Dodaj</Button>
+                <Button className="main_button" hidden={!owner} onClick={() => { setArchived(!archived); }}>Zarchiwizowany</Button>
+                <Table>
                     <thead>
                         <tr>
                             <th>#</th>
@@ -258,15 +259,15 @@ const StudiesExams = ({ authState }) => {
                                     <td>{formatDate(item.startAt)}</td>
                                     <td>{formatDate(item.endAt)}</td>
                                     {owner && <td>
-                                        <FaEye onClick={() => { navigate(`/studies/${studiesId}/exams/${item.id}`)}} />
-                                        {!archived && <FaEdit onClick={() => { triggerEdit(item) }}></FaEdit>}
-                                        {archived && <FaBackward onClick={() => { handleBack(item) }}/>}
-                                        <IoTrashBin onClick={() => { triggerDelete(item); }} />
+                                        <FaEye className="icon" onClick={() => { navigate(`/studies/${studiesId}/exams/${item.id}`)}} />
+                                        {!archived && <FaEdit className="icon" onClick={() => { triggerEdit(item) }}></FaEdit>}
+                                        {archived && <FaBackward className="icon" onClick={() => { handleBack(item) }}/>}
+                                        <IoTrashBin className="icon" onClick={() => { triggerDelete(item); }} />
 
                                         </td>}
                                     {!owner && <td>
-                                        <Button disabled={!isDateInRange(item.startAt, item.endAt)} onClick={() => {navigate(`/studies/${studiesId}/exams/${item.id}/participate`);}}>Start</Button>
-                                        <Button disabled={!item.showResults} onClick={() => {handleShowResult(item.id)}}>{t('result')}</Button>
+                                        <Button className="main_button" disabled={!isDateInRange(item.startAt, item.endAt)} onClick={() => {navigate(`/studies/${studiesId}/exams/${item.id}/participate`);}}>Start</Button>
+                                        <Button variant="secondary" disabled={!item.showResults} onClick={() => {handleShowResult(item.id)}}>{t('result')}</Button>
                                         </td>}
                                 </tr>
                             ))
@@ -346,8 +347,8 @@ const StudiesExams = ({ authState }) => {
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={() => { handleCloseModal(); }}>{t('close')}</Button>
-                        <Button variant="primary" type="submit">{formData.id ? t('edit') : t('add')}</Button>
+                        <Button variant="secondary" onClick={() => { handleCloseModal(); }}>{t('close')}</Button>
+                        <Button className="main_button" variant="primary" type="submit">{formData.id ? t('edit') : t('add')}</Button>
                     </Modal.Footer>
                 </Form>
             </Modal>
@@ -360,7 +361,9 @@ const StudiesExams = ({ authState }) => {
                     {t('do_you_want_delete_this')}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => { handleDelete(); }}>Usuń</Button>
+                    <Button variant="secondary" onClick={() => { handleCloseDeleteModal(); }}>{t('close')}</Button>
+
+                    <Button className="main_button" onClick={() => { handleDelete(); }}>{t('remove')}</Button>
                 </Modal.Footer>
             </Modal>
 
@@ -372,7 +375,7 @@ const StudiesExams = ({ authState }) => {
                     {t('result_text')}: {points}/{maxPoints}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => {setShowResults(false)}}>{t('close')}</Button>
+                    <Button variant="secondary" onClick={() => {setShowResults(false)}}>{t('close')}</Button>
                 </Modal.Footer>
             </Modal>
         </div>

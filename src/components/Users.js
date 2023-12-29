@@ -140,9 +140,9 @@ const Users = ({ authState }) => {
         });
     }
     return (
-        <div className='center-main centered-element'>
+        <div className='center-main'>
             <div className='centered-element'>
-                <Button onClick={() => { setAddModal(true) }}>{t('add')}</Button>
+                <Button className="main_button" onClick={() => { setAddModal(true) }}>{t('add')}</Button>
                 <Table striped>
                     <thead>
                         <tr>
@@ -167,7 +167,7 @@ const Users = ({ authState }) => {
                                 <Form.Control input='text' name="email" value={filters.email} onChange={handleChange} />
                             </td>
                             <td>
-                                <select value={filters.role} name="role" onChange={handleChange}>
+                                <select className="form-select" value={filters.role} name="role" onChange={handleChange}>
                                     <option value="" disabled>{t('select')}</option>
                                     {groups.map(role => (
                                         <option key={role.key} value={role.key.split('_')[1]}>{t(role.key)}</option>
@@ -178,7 +178,7 @@ const Users = ({ authState }) => {
 
                             </td>
                             <td>
-                                <Button onClick={() => { searchItems(); }}>{t('search')}</Button>
+                                <Button className="main_button" onClick={() => { searchItems(); }}>{t('search')}</Button>
                             </td>
                         </tr>
 
@@ -208,6 +208,7 @@ const Users = ({ authState }) => {
                         ))}
                     </tbody>
                 </Table>
+                
                 <Pagination total={pageDetails.pages} currentPage={pageDetails.page} onPageChange={handlePageChange} />
 
             </div>
@@ -220,36 +221,36 @@ const Users = ({ authState }) => {
                         <Form.Group>
                             <Form.Label>
                                 {t('firstname')}:
-                                <Form.Control type='text' name='firstname' value={formData.firstname} />
                             </Form.Label>
+                                <Form.Control type='text' name='firstname' value={formData.firstname} />
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>
                                 {t('lastname')}:
-                                <Form.Control type='text' name='lastname' value={formData.lastname} />
                             </Form.Label>
+                                <Form.Control type='text' name='lastname' value={formData.lastname} />
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>
                                 Email:
-                                <Form.Control type='email' name='email' value={formData.email} />
                             </Form.Label>
+                                <Form.Control type='email' name='email' value={formData.email} />
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>
                                 Admin?:
+                            </Form.Label>
                                 <Form.Check
                                     type='checkbox'
                                     name='isTeacher'
                                     checked={admin}
                                     onChange={(e) => { setAdmin(e.target.checked) }}
                                 />
-                            </Form.Label>
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={() => { setAddModal(false); clearForm(); }}>{t('close')}</Button>
-                        <Button type="submit">{t('add')}</Button>
+                        <Button variant="secondary" onClick={() => { setAddModal(false); clearForm(); }}>{t('close')}</Button>
+                        <Button className="main_button" type="submit">{t('add')}</Button>
                     </Modal.Footer>
                 </Form>
             </Modal>

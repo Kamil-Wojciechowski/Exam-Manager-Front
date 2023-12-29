@@ -159,9 +159,9 @@ const ExamResults = ({ authState }) => {
     }
 
     return (
-        <div className='center-main centered-element'>
+        <div className='center-main'>
             <div className='centered-element'>
-                <Button onClick={() => {setSendResults(true)}}>{t('return')}</Button>
+                <Button className="main_button" onClick={() => {setSendResults(true)}}>{t('return')}</Button>
                 <Table striped>
                     <thead>
                         <tr>
@@ -261,20 +261,21 @@ const ExamResults = ({ authState }) => {
                     </Table>
                 </Modal.Body>
                 <Modal.Footer>
+                <Button variant="secondary" onClick={() => { handleCloseModal(); }}>{t('close')}</Button>
 
                 </Modal.Footer>
             </Modal>
 
             <Modal show={sendResults} onHide={() => {setSendResults(false)}}>
                 <Modal.Header>
-                    Wyniki
+                    {t('result')}
                 </Modal.Header>
                 <Modal.Body>
-                    Czy chcesz oddać wyniki?
+                    {t('do_you_want_give')} {t('results')}?
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => {setSendResults(false);}}>Zamknij</Button> 
-                    <Button onClick={() => {handleSendResults()}}>Wyślij</Button>
+                    <Button variant="secondary" onClick={() => {setSendResults(false);}}>Zamknij</Button> 
+                    <Button className="main_button" onClick={() => {handleSendResults()}}>Wyślij</Button>
                 </Modal.Footer>
             </Modal>
         </div>

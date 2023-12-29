@@ -20,6 +20,7 @@ const StudiesForm = ({ authState, studiesData, studiesId, isCreate, showModal, c
     useEffect(() => {
         const getClassrooms = async () => {
             await axios.get("/studies/classrooms").then((res) => {
+                console.log(res.data.data);
                 setClassrooms(res.data.data);
             });
         }
@@ -32,7 +33,7 @@ const StudiesForm = ({ authState, studiesData, studiesId, isCreate, showModal, c
             getClassrooms();
         }
 
-    }, [isCreate, studiesData, authState.user.googleConnected]);
+    }, [showModal, isCreate, studiesData, authState.user.googleConnected]);
 
     const handleChange = (e) => {
         setFormData({
@@ -58,7 +59,7 @@ const StudiesForm = ({ authState, studiesData, studiesId, isCreate, showModal, c
             axios.post("/studies", formData).then(res => {
                 toastr.success(t('success'));
                 window.location.reload();
-                closeModal(); 
+                closeModal();
             }).catch(error => {
                 toastr.error(error.response.data.message);
             });
@@ -83,25 +84,28 @@ const StudiesForm = ({ authState, studiesData, studiesId, isCreate, showModal, c
                     <Form.Group>
                         <Form.Label>
                             <p>{t('name')}:</p>
-                            <Form.Control input='text' name='name' value={formData.name} onChange={handleChange} />
                         </Form.Label>
-                        {(authState.user.googleConnected && classroomData) && (
+                        <Form.Control input='text' name='name' value={formData.name} onChange={handleChange} />
+                    </Form.Group>
+                    <br/>
+                    {(authState.user.googleConnected && classroomData) && (
+                        <Form.Group>
                             <Form.Label>
                                 <p>Classroom:</p>
-                                <Form.Control as="select" value={formData.classroomId ? formData.classroomId : ''} onChange={handleOptionChange}>
-                                    <option value="" disabled>{t('select')}</option>
-                                    {
-                                        classroomData.map(item => (
-                                            <option key={item.id} value={item.id}>{item.name}</option>
-                                        ))
-                                    }
-                                </Form.Control>
                             </Form.Label>
-                        )}
-                    </Form.Group>
+                            <Form.Control as="select" value={formData.classroomId ? formData.classroomId : ''} onChange={handleOptionChange}>
+                                <option value="" disabled>{t('select')}</option>
+                                {
+                                    classroomData.map(item => (
+                                        <option key={item.id} value={item.id}>{item.name}</option>
+                                    ))
+                                }
+                            </Form.Control>
+                        </Form.Group>
+                    )}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => {closeModal();}}>{t('close')}</Button>
+                    <Button variant="secondary" onClick={() => { closeModal(); }}>{t('close')}</Button>
                     {(isCreate) ?
                         <Button className="main_button" variant='primary' type="submit">{t('add')}</Button>
                         :

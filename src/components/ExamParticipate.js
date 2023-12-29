@@ -80,7 +80,7 @@ const ExamParticipate = ({ authState }) => {
     }
 
     return (
-        <div className='center-main centered-element'>
+        <div className='center-main'>
             <div className='centered-element'>
                 <Row>
                     {[...Array(pageDetails.pages).keys()].map((pageNumber) => (
@@ -92,9 +92,9 @@ const ExamParticipate = ({ authState }) => {
                     ))}
                 </Row>
 
-                <Button disabled={pageDetails.page === 0} onClick={() => { handleDown(); }} >{t('previous')}</Button>
-                <Button disabled={pageDetails.page === pageDetails.pages - 1} onClick={() => { handleUp(); }}>{t('next')}</Button>
-                { pageDetails.page === pageDetails.pages - 1 && <Button onClick={() => handleSend()}>{t('send')}</Button> }
+                <Button className="main_button" disabled={pageDetails.page === 0} onClick={() => { handleDown(); }} >{t('previous')}</Button>
+                <Button className="main_button" disabled={pageDetails.page === pageDetails.pages - 1} onClick={() => { handleUp(); }}>{t('next')}</Button>
+                { pageDetails.page === pageDetails.pages - 1 && <Button className="main_button" onClick={() => handleSend()}>{t('send')}</Button> }
                 <Form>
                     {question.question && (
                         <QuestionGenerator question={question} answers={answers} setAnswers={setAnswers}></QuestionGenerator>

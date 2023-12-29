@@ -5,7 +5,7 @@ const Pagination = ({ total, currentPage, onPageChange }) => {
 
   return (
     <div className="pagination">
-      <select value={currentPage} onChange={(e) => onPageChange(parseInt(e.target.value, 10))}>
+      <select className="form-select" value={currentPage} onChange={(e) => onPageChange(parseInt(e.target.value, 10))}>
         {pageArray.map((pageNumber) => (
           <option key={pageNumber} value={pageNumber}>
             {pageNumber}

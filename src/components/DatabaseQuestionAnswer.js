@@ -102,9 +102,9 @@ const DatabaseQuestionAnswer = ({ authState }) => {
     }
 
     return (
-        <div className='center-main centered-element'>
+        <div className='center-main'>
             <div className='centered-element'>
-                <Button onClick={() => { setShowModal(true); }}>{t('add')}</Button>
+                <Button className="main_button" onClick={() => { setShowModal(true); }}>{t('add')}</Button>
                 <Table striped>
                     <thead>
                         <tr>
@@ -146,6 +146,7 @@ const DatabaseQuestionAnswer = ({ authState }) => {
                                 onChange={handleChange}
                             />
                         </Form.Group>
+                        <br />
 
                         <Form.Group controlId="formCorrect">
                             <Form.Check
@@ -158,8 +159,8 @@ const DatabaseQuestionAnswer = ({ authState }) => {
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={() => { setShowModal(false); }}>{t('close')}</Button>
-                        <Button type="submit">{formData.id ? t('edit') : t('add')}</Button>
+                        <Button variant="secondary" onClick={() => { setShowModal(false); }}>{t('close')}</Button>
+                        <Button className="main_button" type="submit">{formData.id ? t('edit') : t('add')}</Button>
                     </Modal.Footer>
                 </Form>
             </Modal>
@@ -172,8 +173,8 @@ const DatabaseQuestionAnswer = ({ authState }) => {
                     {t('do_you_want_delete_this')}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => {handleCloseDeleteModal(); }}>{t('close')}</Button>
-                    <Button onClick={() => { handleDelete(); }}>{t('remove')}</Button>
+                    <Button variant="secondary" onClick={() => {handleCloseDeleteModal(); }}>{t('close')}</Button>
+                    <Button className="main_button" onClick={() => { handleDelete(); }}>{t('remove')}</Button>
                 </Modal.Footer>
             </Modal>
         </div>

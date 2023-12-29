@@ -18,7 +18,7 @@ const DatabaseForm = ({ showAddModal, showUpdateModal, closeModal, databaseId, i
             });
         }
     }, [itemData]);
-    
+
 
     const handleChange = (e) => {
         setFormData({
@@ -28,7 +28,7 @@ const DatabaseForm = ({ showAddModal, showUpdateModal, closeModal, databaseId, i
     };
 
     const handleForm = async () => {
-        if(showAddModal) {
+        if (showAddModal) {
             await axios.post("/questions/metadata", formData).then(res => {
                 changeState();
                 closeModal();
@@ -36,7 +36,7 @@ const DatabaseForm = ({ showAddModal, showUpdateModal, closeModal, databaseId, i
             }).catch(error => {
                 toastr.error(error.response.data.message);
             });
-        } else if(showUpdateModal) {
+        } else if (showUpdateModal) {
             await axios.put("/questions/metadata/" + databaseId, formData).then(res => {
                 changeState();
                 closeModal();
@@ -49,22 +49,25 @@ const DatabaseForm = ({ showAddModal, showUpdateModal, closeModal, databaseId, i
 
     return (
         <Modal show={showAddModal || showUpdateModal} onHide={closeModal}>
-            <Form onSubmit={(e) => {e.preventDefault(); handleForm();}}>
+            <Form onSubmit={(e) => { e.preventDefault(); handleForm(); }}>
                 <Modal.Header>
                     {t('database')}
                 </Modal.Header>
                 <Modal.Body>
-                    <Form.Label>
-                        <p>{t('name')}:</p>
+                    <Form.Group>
+                        <Form.Label>
+                            <p>{t('name')}:</p>
+                        </Form.Label>
                         <Form.Control input="text" name="name" value={formData.name} onChange={handleChange}></Form.Control>
-                    </Form.Label>
-                    
+                    </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button type="submit">
+                    <Button variant="secondary" onClick={() => { closeModal(); }}>{t('close')}</Button>
+                    <Button className="main_button" type="submit">
                         {showAddModal && t('add')}
                         {showUpdateModal && t('update')}
                     </Button>
+
                 </Modal.Footer>
             </Form>
         </Modal>);

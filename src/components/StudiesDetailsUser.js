@@ -148,30 +148,31 @@ const StudiesDetailsUser = ({ authState }) => {
     }
 
     return (
-        <div className='center-main centered-element'>
-            <div className='centered-element'>
+        <div className='center-main'>
+            
+            <Button className="main_button" type="button" hidden={showUsers} onClick={() => { setShowDetails(false); setShowUsers(true) }}>{t('details')}</Button>
+            <Button className="main_button" type="button" hidden={showDetails} onClick={() => { setShowDetails(true); setShowUsers(false) }}>{t('users')}</Button>
+            <Button className="main_button" onClick={() => {navigate("/studies/" + studiesId + "/exams")}}>{t('exams')}</Button>
                 
-                <Button type="button" hidden={showUsers} onClick={() => { setShowDetails(false); setShowUsers(true) }}>{t('details')}</Button>
-                <Button type="button" hidden={showDetails} onClick={() => { setShowDetails(true); setShowUsers(false) }}>{t('users')}</Button>
-                <Button onClick={() => {navigate("/studies/" + studiesId + "/exams")}}>{t('exams')}</Button>
+             
+                
+            <div className='centered-element'>
 
                 <div hidden={showDetails}>
-                    {formData.owner && <Button type='button' onClick={() => { openModal() }}>{t('edit')}</Button>}
-                    {formData.owner && <Button type='button' onClick={() => { openDeleteModal() }}>{t('remove')}</Button>}
-
-                    <p>{t('name')}:</p>
-                    <p>{formData.name}</p>
+                    <h2>{t('details')}</h2>
+                    <p>{t('name')}: {formData.name}</p>
                     <StudiesForm authState={authState} studiesData={formData} studiesId={studiesId} isCreate={false} showModal={showModal} closeModal={closeModal}></StudiesForm>
                     {
                         (formData.classroomName) ?
-                            <>
-                                <p>Classroom:</p>
-                                <p>{formData.classroomName}</p>
+                        <>
+                                <p>Classroom: {formData.classroomName}</p>
                             </>
                             :
                             <>
                             </>
                     }
+                    {formData.owner && <Button className="main_button" type='button' onClick={() => { openModal() }}>{t('edit')}</Button>}
+                    {formData.owner && <Button className="main_button" type='button' onClick={() => { openDeleteModal() }}>{t('remove')}</Button>}
                 </div>
 
                 <Modal show={showDeleteModal} onHide={() => setDeleteModal(false)}>
@@ -190,20 +191,21 @@ const StudiesDetailsUser = ({ authState }) => {
 
 
                 <div hidden={showUsers}>
-                    {formData.owner && <Button type="button" onClick={() => { setShowUserModal(true); }}>{t('add')}</Button>}
-                    {formData.owner && <Button type="button" onClick={() => { setUserImportModal(true); }}>Import</Button>}
+                    <h2>{t('users')}</h2>
+                    {formData.owner && <Button className="main_button" type="button" onClick={() => { setShowUserModal(true); }}>{t('add')}</Button>}
+                    {formData.owner && <Button className="main_button" type="button" onClick={() => { setUserImportModal(true); }}>Import</Button>}
                     {(users.length === 0) ?
                         <div>
                             {t('no_users')}
                         </div> :
-                        <Table striped>
+                        <Table>
                             <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>{t('firstname')}</th>
                                     <th>{t('lastname')}</th>
                                     <th>Email</th>
-                                    {formData.owner && <th>{t('options')}</th>}
+                                    <th>{formData.owner && t('options')}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -213,12 +215,13 @@ const StudiesDetailsUser = ({ authState }) => {
                                         <td>{item.owner && <FaCrown size={25} />} {item.user.firstname}</td>
                                         <td>{item.user.lastname}</td>
                                         <td>{item.user.email}</td>
-                                        {(formData.owner && item.user.id !== authState.user.id) && <td>
+                                        <td>
+                                        {(formData.owner && item.user.id !== authState.user.id) && 
                                             <TiUserDelete onClick={() => {
                                                 setStudiesUser(item);
                                                 setUserDeleteModal(true)
                                             }}></TiUserDelete>
-                                        </td>}
+                                        }</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -231,9 +234,12 @@ const StudiesDetailsUser = ({ authState }) => {
                             {t('user')} {formData.name}
                         </Modal.Header>
                         <Modal.Body>
-                            {t('do_you_want_delete')} {studiesUser.user.firstname}
+                            {t('do_you_want_delete')} {studiesUser.user.firstname}?
                         </Modal.Body>
                         <Modal.Footer>
+                        <Button variant='secondary' onClick={() => { setUserDeleteModal(false) }}>
+                                {t('close')}
+                            </Button>
                             <Button className="main_button" variant='primary' onClick={() => { handleUserDelete() }}>
                                 {t('remove')}
                             </Button>
@@ -267,8 +273,8 @@ const StudiesDetailsUser = ({ authState }) => {
 
                             </Modal.Body>
                             <Modal.Footer>
-                                <Button onClick={() => {setUserImportModal(false)}}>{t('close')}</Button>
-                                <Button variant="primary" type="submit">
+                                <Button variant="secondary" onClick={() => {setUserImportModal(false)}}>{t('close')}</Button>
+                                <Button className="main_button" type="submit">
                                     Import
                                 </Button>
                             </Modal.Footer>

@@ -4,6 +4,7 @@
 @import './scss/navigation.scss';
 @import './scss/auth.scss';
 @import './scss/dashboard.scss';
+@import './scss/admin.scss';
 
 * {
 	margin: 0;
@@ -25,23 +26,31 @@ code {
 }
 
 .center-main {
-  position: relative;
-	height: 100vh;
+  text-align: center;
+	padding: 5vh 10vh;
 }
 
 .centered-element {
-	margin: 0;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
+  margin-top: 10vh;
+  padding:5vh;
+  @include border;
 }
+
 
 .main_button {
   background-color: $secondaryColor;
   border: $mainColor;
+  margin: 0.5vh;
   &:hover, :focus, :active, :visited {
     background-color: $hoverColor;
     border: $mainColor;
   }
+  &:disabled{
+    background-color: $secondaryColor;
+    border: $mainColor;
+  }
+}
+
+.icon{
+  margin: 0 0.5vh;
 }

@@ -18,7 +18,7 @@ $color_1: #b8b7ad;
 	width: 24px;
 }
 .bm-cross {
-	background: #bdc3c7;
+	background: black;
 }
 .bm-menu-wrap {
 	position: fixed;
@@ -46,6 +46,18 @@ $color_1: #b8b7ad;
 	&-title {
 		color: black;
 	}
+	&-list{
+		list-style-type:square;
+	}
+	&-item{
+		color: black; 
+		text-decoration: none; 
+		&:hover, &:active, &:focus {
+			color: gray;
+			text-decoration: underline;
+		}
+	}
+	
 }
 
 .language {

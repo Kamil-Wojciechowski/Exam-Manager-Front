@@ -20,6 +20,7 @@
     "activation": "Aktywacja",
     "account_activated": "Aktywacja przebiegła pomyślnie",
     "database": "Baza danych",
+    "databases": "Bazy danych",
     "enter_answer": "Umieść swoją odpowiedź",
     "success": "Sukces!",
     "name": "Nazwa",
@@ -79,7 +80,8 @@
     "email_send": "Email został wysłany, na podany adres email",
     "incorrect_value": "Niepoprawna wartość",
     "email_required": "Email jest wymagany",
-    "exams": "Egzmainy",
+    "exams": "Egzaminy",
+    "exam": "Egzamin",
     "no_users": "Brak użytkowników, prosimy o dodanie kilku",
     "user": "Użytkownik",
     "starts": "Rozpoczęcie",
@@ -91,7 +93,9 @@
     "blocked": "Zablokowany",
     "search": "Szukaj",
     "ROLE_STUDENT": "Student",
-    "ROLE_TEACHER": "Nauczyciel"
+    "ROLE_TEACHER": "Nauczyciel",
+    "results": "wyniki",
+    "do_you_want_give": "Czy chcesz zwrócić"
     
   }
 }

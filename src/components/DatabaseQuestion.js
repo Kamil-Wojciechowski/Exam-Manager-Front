@@ -168,10 +168,11 @@ const DatabaseQuestion = ({ authState }) => {
     }
 
     return (
-        <div className='center-main centered-element'>
+        <div className='center-main'>
             <div className='centered-element'>
-                <Button onClick={() => { setShowModal(true) }}>{t('add')}</Button>
-                <Button onClick={() => { setImportModal(true) }}>Import</Button>
+                <h2>{t('questions')}</h2>
+                <Button className="main_button" onClick={() => { setShowModal(true) }}>{t('add')}</Button>
+                <Button className="main_button" onClick={() => { setImportModal(true) }}>Import</Button>
                 <Table striped>
                     <thead>
                         <tr>
@@ -215,16 +216,16 @@ const DatabaseQuestion = ({ authState }) => {
                         {t('question')}
                     </Modal.Header>
                     <Modal.Body>
-
                         <Form.Group>
                             <Form.Label>
                                 {t('question')}:
-                                <Form.Control type="text" name="question" value={formData.question} onChange={handleChange}></Form.Control>
                             </Form.Label>
+                                <Form.Control type="text" name="question" value={formData.question} onChange={handleChange}></Form.Control>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>
                                 <p>{t('type')}:</p>
+                            </Form.Label>
                                 <Form.Control as="select" value={formData.questionType ? formData.questionType : ''} onChange={handleOptionChange}>
                                     <option value="" disabled>Select an item</option>
                                     {
@@ -233,12 +234,11 @@ const DatabaseQuestion = ({ authState }) => {
                                         ))
                                     }
                                 </Form.Control>
-                            </Form.Label>
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={() => { setShowModal(false) }}>{t('close')}</Button>
-                        <Button type="submit">{edit ? t('edit') : t('add')}</Button>
+                        <Button variant="secondary" onClick={() => { setShowModal(false) }}>{t('close')}</Button>
+                        <Button className="main_button" type="submit">{edit ? t('edit') : t('add')}</Button>
                     </Modal.Footer>
                 </Form>
             </Modal>
@@ -251,7 +251,8 @@ const DatabaseQuestion = ({ authState }) => {
                     {t('do_you_want_delete_this')}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => { handleDelete(); }}>{t('remove')}</Button>
+                    <Button variant="secondary" onClick={() => { setShowDeleteModal(false); setItemId(0); }}>{t('close')}</Button>
+                    <Button className="main_button" onClick={() => { handleDelete(); }}>{t('remove')}</Button>
                 </Modal.Footer>
             </Modal>
 
@@ -268,7 +269,9 @@ const DatabaseQuestion = ({ authState }) => {
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="primary" type="submit">
+                     <Button variant="secondary" onClick={() => { setImportModal(false) }}>{t('close')}</Button>
+
+                        <Button className="main_button" variant="primary" type="submit">
                             Import
                         </Button>
                     </Modal.Footer>

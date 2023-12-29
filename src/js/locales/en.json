@@ -20,6 +20,7 @@
     "activation": "Activation",
     "account_activated": "Activation success",
     "database": "Database",
+    "databases": "Databases",
     "enter_answer": "Enter your answer",
     "success": "Success!",
     "name": "Name",
@@ -80,6 +81,7 @@
     "incorrect_value": "Incorrect value",
     "email_required": "Email is required",
     "exams": "Exams",
+    "exam": "Exam",
     "no_users": "No Users, please add some",
     "user": "User",
     "starts": "Starts",
@@ -91,7 +93,9 @@
     "blocked": "Blocked",
     "search": "Search",
     "ROLE_STUDENT": "Student",
-    "ROLE_TEACHER": "Teacher"
+    "ROLE_TEACHER": "Teacher",
+    "results": "results",
+    "do_you_want_give": "Do you want to give back"
     
 
   }
