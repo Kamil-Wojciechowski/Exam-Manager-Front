@@ -229,7 +229,7 @@ const ExamResults = ({ authState }) => {
                                                 {t('correct')}:
                                                 <select className="form-select"
                                                     disabled={!sent}
-                                                    value={changeItem.correct ? changeItem.correct : (item.correct ? t(item.correct) : t("NOT_CORRECT"))}
+                                                    value={changeItem.correct ? changeItem.correct : (item.correct ? item.correct : "NOT_CORRECT")}
                                                     onChange={(e) => { if (sent) handleCorrectChange(item.id, e.target.value) }}
                                                 >
                                                     {answerCorrectOptions.map((option) => (
@@ -253,7 +253,7 @@ const ExamResults = ({ authState }) => {
                                             </label><br />
 
                                             <label>
-                                                {t('user_answers')}: <ul> {item.answer.length !== 0 ? item.answer.map(answer => <li>{answer.questionAnswer.answer}</li>) : t('no_answer')}</ul> 
+                                                {t('user_answers')}: <ul> {item.answer.length !== 0 ? item.answer.map(answer => <li>{answer.manualAnswer ? answer.manualAnswer : answer.questionAnswer.answer}</li>) : t('no_answer')}</ul> 
                                             </label><br />
                                             <label>
                                                 {t('answer_changed')}: {item.changedManually ? <FaCheck /> : <HiXMark />}

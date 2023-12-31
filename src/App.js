@@ -40,7 +40,7 @@ const App = () => {
         <AuthCheck>
           {(authState) => {
             if (authState.isAuthenticated === null) {
-              return <div className='center-main'><PacmanLoader className='centered-element' color="#36d7b7" /></div>;
+              return <div className='center-main'><PacmanLoader className='centered' color="#36d7b7" /></div>;
             }
 
             if (authState.isAuthenticated != null) {

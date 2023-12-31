@@ -6,6 +6,7 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import QuestionGenerator from "./forms/exam/QuestionGenerator";
 import toastr from 'toastr';
 import { useTranslation } from "react-i18next";
+import { PacmanLoader } from "react-spinners";
 
 
 const ExamParticipate = ({ authState }) => {
@@ -24,6 +25,7 @@ const ExamParticipate = ({ authState }) => {
 
     });
     const [answers, setAnswers] = useState([]);
+    const [waiting, setWaiting] = useState(false);
 
     useEffect(() => {
         const storedAnswers = localStorage.getItem("examAnswers");
@@ -70,13 +72,21 @@ const ExamParticipate = ({ authState }) => {
     }
 
     const handleSend = async () => {
+        setWaiting(true);
+        
         await axios.post(`/studies/${studiesId}/exams/${examId}/groups/questions/participate`, answers).then(res => {
+            setWaiting(false);
             toastr.success("Sukces");
             navigate(`/studies/${studiesId}/exams`);
             localStorage.removeItem("examAnswers");
         }).catch(error => {
+            setWaiting(false);
             toastr.error(error.response.data.message);
         })
+    }
+
+    if(waiting) {
+        return <div className='center-main'><PacmanLoader className='centered' color="#36d7b7" /></div>;
     }
 
     return (

@@ -16,20 +16,20 @@ const StudiesForm = ({ authState, studiesData, studiesId, isCreate, showModal, c
 
     const [classroomData, setClassrooms] = useState([])
 
-
     useEffect(() => {
         const getClassrooms = async () => {
-            await axios.get("/studies/classrooms").then((res) => {
-                console.log(res.data.data);
-                setClassrooms(res.data.data);
-            });
+            if(authState.user.googleConnected) {
+                await axios.get("/studies/classrooms").then((res) => {
+                    setClassrooms(res.data.data);
+                });
+            }
         }
 
         if (!isCreate) {
             setFormData(studiesData);
         }
-
-        if (formData.owner && authState.user.googleConnected) {
+        
+        if ((isCreate | formData.owner)) {
             getClassrooms();
         }
 
