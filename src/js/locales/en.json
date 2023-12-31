@@ -95,7 +95,8 @@
     "ROLE_STUDENT": "Student",
     "ROLE_TEACHER": "Teacher",
     "results": "results",
-    "do_you_want_give": "Do you want to give back"
+    "do_you_want_give": "Do you want to give back",
+    "no_answer": "No answers"
     
 
   }

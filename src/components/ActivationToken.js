@@ -124,7 +124,7 @@ const ActivationToken = ({ authState }) => {
 
     return (
         <div id="activation_token">
-            <div className="centered-element">
+            <div className="centered">
                 <div id="activation_token-border">
                     <h2>{t('activation')}</h2>
                     <div style={{ color: 'red' }}>

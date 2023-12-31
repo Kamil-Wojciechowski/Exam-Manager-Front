@@ -37,7 +37,8 @@ const MultipleAnswer = ({ question, answers, setAnswers }) => {
     <Form.Group>
       <Form.Label>{question.question.question}</Form.Label>
       {question.question.answers.map((answer) => (
-        <Form.Check
+        <Form.Check 
+          className="left-main"
           key={answer.id}
           type="checkbox"
           id={`answer-${answer.id}`}

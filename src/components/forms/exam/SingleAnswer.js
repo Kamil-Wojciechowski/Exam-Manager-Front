@@ -26,6 +26,7 @@ const SingleAnswer = ({ question, answers, setAnswers }) => {
 
         {question.question.answers.map((answer) => (
           <Form.Check
+            className="left-main"
             key={answer.id}
             type="radio"
             id={`answer-${answer.id}`}

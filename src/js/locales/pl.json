@@ -95,7 +95,8 @@
     "ROLE_STUDENT": "Student",
     "ROLE_TEACHER": "Nauczyciel",
     "results": "wyniki",
-    "do_you_want_give": "Czy chcesz zwrócić"
+    "do_you_want_give": "Czy chcesz zwrócić",
+    "no_answer": "Brak odpowiedzi"
     
   }
 }

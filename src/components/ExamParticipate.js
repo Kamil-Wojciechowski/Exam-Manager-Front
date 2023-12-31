@@ -81,21 +81,22 @@ const ExamParticipate = ({ authState }) => {
 
     return (
         <div className='center-main'>
-            <div className='centered-element'>
+            <div className='centered-element w-50'>
                 <Row>
                     {[...Array(pageDetails.pages).keys()].map((pageNumber) => (
                         <Col key={pageNumber}>
-                            <div onClick={() => handlePageChange(pageNumber)}>
+                            <Button variant="secondary" onClick={() => handlePageChange(pageNumber)}>
                                 {pageNumber + 1}
-                            </div>
+                            </Button>
                         </Col>
                     ))}
                 </Row>
-
+                <hr />     
                 <Button className="main_button" disabled={pageDetails.page === 0} onClick={() => { handleDown(); }} >{t('previous')}</Button>
                 <Button className="main_button" disabled={pageDetails.page === pageDetails.pages - 1} onClick={() => { handleUp(); }}>{t('next')}</Button>
                 { pageDetails.page === pageDetails.pages - 1 && <Button className="main_button" onClick={() => handleSend()}>{t('send')}</Button> }
-                <Form>
+                <hr /> 
+                <Form className="text-left">
                     {question.question && (
                         <QuestionGenerator question={question} answers={answers} setAnswers={setAnswers}></QuestionGenerator>
                     )}

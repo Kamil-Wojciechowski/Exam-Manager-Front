@@ -3,9 +3,14 @@
 	height: 100vh;
 
     &-border {
-        
+        margin: auto;
+        width: 20vw;
         padding: 4rem;
         @include shadow;
         @include border;
     }
+}
+
+.centered{
+    margin-top: 10vh;; 
 }

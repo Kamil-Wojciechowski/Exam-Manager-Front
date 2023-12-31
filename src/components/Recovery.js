@@ -58,7 +58,7 @@ const Recovery = ({ authState }) => {
 
     return (
         <div id="recovery">
-            <div className="centered-element">
+            <div className="centered">
                 <div id="recovery-border">
                     <h2>{t('recovery')}</h2>
                     <Form onSubmit={(e) => { e.preventDefault(); handleRecovery(); }}>

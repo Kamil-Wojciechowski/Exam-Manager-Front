@@ -124,7 +124,7 @@ const Recovery = ({ authState }) => {
 
     return (
         <div id="recovery_token">
-            <div className="centered-element">
+            <div className="centered">
                 <div id="recovery_token-border">
                     <h2>{t('recovery')}</h2>
                     <div style={{ color: 'red' }}>

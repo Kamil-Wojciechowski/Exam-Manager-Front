@@ -56,9 +56,9 @@ const ExamResults = ({ authState }) => {
                 pages: res.data.pages
             });
 
-            if(item !== 0) {
+            if (item !== 0) {
                 const itemPoints = res.data.data.filter(filterItem => filterItem.id === item)[0];
-                setPoints(itemPoints.points);
+                setPoints(itemPoints.points ? itemPoints.points : 0);
             }
 
         }).catch(error => {
@@ -114,6 +114,7 @@ const ExamResults = ({ authState }) => {
 
     const toggleExpandItem = (itemId) => {
         setChangeItem({});
+        setPoints(points);
         setExpandedItem((prevExpandedItem) =>
             prevExpandedItem === itemId ? null : itemId
         );
@@ -161,8 +162,9 @@ const ExamResults = ({ authState }) => {
     return (
         <div className='center-main'>
             <div className='centered-element'>
-                <Button className="main_button" onClick={() => {setSendResults(true)}}>{t('return')}</Button>
-                <Table striped>
+                <h2>{t('answers')}</h2>
+                <Button className="main_button" onClick={() => { setSendResults(true) }}>{t('return')}</Button>
+                <Table>
                     <thead>
                         <tr>
                             <th>#</th>
@@ -199,7 +201,7 @@ const ExamResults = ({ authState }) => {
                 <Pagination total={pageDetails.pages} currentPage={pageDetails.page} onPageChange={handlePageChange} />
             </div>
 
-            <Modal show={showAnswerModal} onHide={() => { handleCloseModal() }}>
+            <Modal size="xl" show={showAnswerModal} onHide={() => { handleCloseModal() }}>
                 <Modal.Header>
                     {t('answers')}
                 </Modal.Header>
@@ -209,7 +211,7 @@ const ExamResults = ({ authState }) => {
                             {t('points')}: {points}{"/" + (examDetails.questionPerUser * 2)}
                         </label>
                     </div>
-                    <Table striped>
+                    <Table>
                         <thead>
                             <tr>
                                 <th>{t('question')}</th>
@@ -225,10 +227,10 @@ const ExamResults = ({ authState }) => {
                                         <td>
                                             <label>
                                                 {t('correct')}:
-                                                <select
+                                                <select className="form-select"
                                                     disabled={!sent}
                                                     value={changeItem.correct ? changeItem.correct : (item.correct ? t(item.correct) : t("NOT_CORRECT"))}
-                                                    onChange={(e) => {if(sent) handleCorrectChange(item.id, e.target.value)}}
+                                                    onChange={(e) => { if (sent) handleCorrectChange(item.id, e.target.value) }}
                                                 >
                                                     {answerCorrectOptions.map((option) => (
                                                         <option key={option} value={option}>
@@ -236,21 +238,26 @@ const ExamResults = ({ authState }) => {
                                                         </option>
                                                     ))}
                                                 </select>
-                                            </label>
+                                            </label><br />
                                             <label>
-                                                {t('possible_answers')}: {item.question.answers.map(answer => answer.answer).join(", ")}
-                                            </label>
+                                                {t('possible_answers')}:
+                                                <ul>
+                                                    {item.question.answers.map(answer => <li>{answer.answer}</li>)}
+
+                                                </ul>
+                                            </label><br />
                                             <label>
-                                                {t('correct_answers')}:  {item.question.answers.filter(answer => answer.correct)
-                                                    .map(correctAnswer => correctAnswer.answer)
-                                                    .join(", ")}
-                                            </label>
+                                                {t('correct_answers')}:  <ul>{item.question.answers.filter(answer => answer.correct)
+                                                    .map(correctAnswer => <li>{correctAnswer.answer}</li>)}
+                                                </ul>
+                                            </label><br />
+
                                             <label>
-                                                {t('user_answers')}: {item.answer.map(answer => answer.questionAnswer.answer).join(", ")}
-                                            </label>
+                                                {t('user_answers')}: <ul> {item.answer.length !== 0 ? item.answer.map(answer => <li>{answer.questionAnswer.answer}</li>) : t('no_answer')}</ul> 
+                                            </label><br />
                                             <label>
-                                                {t('answer_changed')}: {item.changedManually ? <FaCheck/> : <HiXMark/>}
-                                            </label>
+                                                {t('answer_changed')}: {item.changedManually ? <FaCheck /> : <HiXMark />}
+                                            </label><br />
                                             {changeItem.id && <Button onClick={() => { saveChanges() }}>{t('edit')}</Button>}
                                         </td>
                                     }
@@ -261,12 +268,12 @@ const ExamResults = ({ authState }) => {
                     </Table>
                 </Modal.Body>
                 <Modal.Footer>
-                <Button variant="secondary" onClick={() => { handleCloseModal(); }}>{t('close')}</Button>
+                    <Button variant="secondary" onClick={() => { handleCloseModal(); }}>{t('close')}</Button>
 
                 </Modal.Footer>
             </Modal>
 
-            <Modal show={sendResults} onHide={() => {setSendResults(false)}}>
+            <Modal show={sendResults} onHide={() => { setSendResults(false) }}>
                 <Modal.Header>
                     {t('result')}
                 </Modal.Header>
@@ -274,8 +281,8 @@ const ExamResults = ({ authState }) => {
                     {t('do_you_want_give')} {t('results')}?
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => {setSendResults(false);}}>Zamknij</Button> 
-                    <Button className="main_button" onClick={() => {handleSendResults()}}>Wyślij</Button>
+                    <Button variant="secondary" onClick={() => { setSendResults(false); }}>Zamknij</Button>
+                    <Button className="main_button" onClick={() => { handleSendResults() }}>Wyślij</Button>
                 </Modal.Footer>
             </Modal>
         </div>

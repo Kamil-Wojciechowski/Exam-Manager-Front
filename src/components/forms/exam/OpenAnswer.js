@@ -8,7 +8,7 @@ const OpenAnswer = ({ question }) => {
     return (
       <Form.Group>
         <Form.Label>{question.question.question}</Form.Label>
-        <Form.Control as="textarea" rows={4} placeholder={t('enter_answer')} />
+        <Form.Control className="left-main" as="textarea" rows={4} placeholder={t('enter_answer')} />
       </Form.Group>
     );
   };

@@ -27,15 +27,20 @@ code {
 
 .center-main {
   text-align: center;
-	padding: 5vh 10vh;
+  padding: 5vh 10vh;
 }
 
+.left-main {
+  text-align: left !important;
+}
+
+
 .centered-element {
+  margin: 0 auto;
   margin-top: 10vh;
   padding:5vh;
   @include border;
 }
-
 
 .main_button {
   background-color: $secondaryColor;
